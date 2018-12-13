@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import Controlleur.ControllerAchatVente;
 import Modele.I_Catalogue;
 
 public class FenetreVente extends JFrame implements ActionListener {
@@ -16,6 +17,7 @@ public class FenetreVente extends JFrame implements ActionListener {
 	public FenetreVente(I_Catalogue c) {
 		setTitle("Vente");
 		setBounds(500, 500, 250, 175);
+		catalogue=c;
 		lesProduits=c.getNomProduits();
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new FlowLayout());
@@ -36,6 +38,7 @@ public class FenetreVente extends JFrame implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		ControllerAchatVente.VenteProduit(combo.getSelectedItem().toString(), Integer.parseInt(txtQuantite.getText()),catalogue);
 		this.dispose();
 	}
 

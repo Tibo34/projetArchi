@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import Controlleur.ControllerCreerSupprimer;
 import Modele.I_Catalogue;
 
 public class FenetreSuppressionProduit extends JFrame implements ActionListener {
@@ -33,6 +34,7 @@ public class FenetreSuppressionProduit extends JFrame implements ActionListener 
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		ControllerCreerSupprimer.supprimerProduit(combo.getSelectedItem().toString(), catalogue);
 		this.dispose();
 	}
 

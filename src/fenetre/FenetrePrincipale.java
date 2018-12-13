@@ -83,7 +83,7 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
 			ControllerStock.afficher(catalogue);
 		if (e.getSource() == btNouveauProduit)
 //			new FenetreNouveauProduit(tabCategories);
-			ControllerCreerSupprimer.afficherAjouter();
+			ControllerCreerSupprimer.afficherAjouter(catalogue);
 		if (e.getSource() == btSupprimerProduit)			
 			ControllerCreerSupprimer.afficherSupprimer(catalogue);
 //		if (e.getSource() == btNouvelleCategorie)

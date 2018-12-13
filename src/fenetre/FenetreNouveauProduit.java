@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import Controlleur.ControllerCreerSupprimer;
 import Modele.I_Catalogue;
 
 public class FenetreNouveauProduit extends JFrame implements ActionListener {
@@ -12,15 +13,15 @@ public class FenetreNouveauProduit extends JFrame implements ActionListener {
 	private JTextField txtQte;
 //	private JComboBox<String> combo;
 	private JButton btValider;
+	private I_Catalogue catalogue;
 	
 //	public FenetreNouveauProduit(String[] lesCategories) {
-	public FenetreNouveauProduit() {	
-		
+	public FenetreNouveauProduit(I_Catalogue c) {	
+		catalogue=c;
 		setTitle("Creation Produit");
 		setBounds(500, 500, 200, 250);
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new FlowLayout());
-
 		JLabel labNom = new JLabel("Nom produit");
 		JLabel labPrixHT = new JLabel("Prix Hors Taxe");
 		JLabel labQte = new JLabel("Quantité en stock");
@@ -49,6 +50,7 @@ public class FenetreNouveauProduit extends JFrame implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		ControllerCreerSupprimer.creerProduit(txtNom.getText(),Double.parseDouble(txtPrixHT.getText()),Integer.parseInt(txtQte.getText()),catalogue);
 		this.dispose();
 	}
 

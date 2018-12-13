@@ -38,7 +38,7 @@ public class Produits implements I_Produit  {
 	@Override
 	public boolean enlever(int qteVendue) {
 		int init=quantiteStock;
-		quantiteStock-=qteVendue;
+		quantiteStock-=qteVendue;		
 		return init>quantiteStock;
 	}
 

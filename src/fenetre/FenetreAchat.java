@@ -5,6 +5,9 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
+import com.sun.xml.internal.ws.api.server.ContainerResolver;
+
+import Controlleur.ControllerAchatVente;
 import Modele.I_Catalogue;
 
 public class FenetreAchat extends JFrame implements ActionListener {
@@ -16,7 +19,8 @@ public class FenetreAchat extends JFrame implements ActionListener {
 	private String[] lesProduits;
 
 	public FenetreAchat(I_Catalogue c) {
-		lesProduits=c.getNomProduits();	
+		lesProduits=c.getNomProduits();
+		catalogue=c;
 		setTitle("Achat");		
 		setBounds(500, 500, 250, 175);
 		Container contentPane = getContentPane();
@@ -36,11 +40,11 @@ public class FenetreAchat extends JFrame implements ActionListener {
 
 		this.setVisible(true);
 	}
-
-	
-
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e) {		
+		ControllerAchatVente.AchatProduit(combo.getSelectedItem().toString(), Integer.parseInt(txtQuantite.getText()),catalogue);
 		this.dispose();
 	}
+
+	
 
 }
