@@ -9,6 +9,5 @@ public interface I_Produit {
 	public abstract double getPrixUnitaireTTC();
 	public abstract double getPrixStockTTC();
 	public abstract String toString();
-	public abstract Produits CréerProduit(String name,double prixUHT,int qte);
-
+	public abstract Produits CreerProduit(String name,double prixUHT,int qte);
 }

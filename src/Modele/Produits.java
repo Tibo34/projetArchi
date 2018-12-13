@@ -66,10 +66,10 @@ public class Produits implements I_Produit  {
 	
 	@Override
 	public String toString() {
-		return nom+"[ quantité : "+quantiteStock+" taux TVA : "+tauxTVA;
+		return nom+"[ quantitï¿½ : "+quantiteStock+" taux TVA : "+tauxTVA;
 	}
 	
-	public Produits CréerProduit(String name,double prixUHT,int qte) {
+	public static Produits CreerProduit(String name,double prixUHT,int qte) {
 		Produits p=new Produits(name,prixUHT,qte);
 		return p;
 	}
