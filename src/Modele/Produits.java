@@ -69,7 +69,7 @@ public class Produits implements I_Produit  {
 		return nom+"[ quantit� : "+quantiteStock+" taux TVA : "+tauxTVA;
 	}
 	
-	public static Produits CreerProduit(String name,double prixUHT,int qte) {
+	public Produits CreerProduit(String name,double prixUHT,int qte) {
 		Produits p=new Produits(name,prixUHT,qte);
 		return p;
 	}
