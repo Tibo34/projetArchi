@@ -1,3 +1,4 @@
+package Modele;
 public interface I_Produit {
 
 	public abstract boolean ajouter(int qteAchetee);

@@ -1,20 +1,20 @@
+package fenetre;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class FenetreAchat extends JFrame implements ActionListener {
+public class FenetreVente extends JFrame implements ActionListener {
 
-	private JButton btAchat;
+	private JButton btVente;
 	private JTextField txtQuantite;
 	private JComboBox<String> combo;
 
-	public FenetreAchat(String[] lesProduits) {
-
-		setTitle("Achat");
+	public FenetreVente(String[] lesProduits) {
+		setTitle("Vente");
 		setBounds(500, 500, 200, 125);
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new FlowLayout());
-		btAchat = new JButton("Achat");
+		btVente = new JButton("Vente");
 		txtQuantite = new JTextField(5);
 		txtQuantite.setText("0");
 
@@ -22,12 +22,11 @@ public class FenetreAchat extends JFrame implements ActionListener {
 		combo.setPreferredSize(new Dimension(100, 20));
 		contentPane.add(new JLabel("Produit"));
 		contentPane.add(combo);
-		contentPane.add(new JLabel("Quantité achetée"));
+		contentPane.add(new JLabel("Quantité vendue"));
 		contentPane.add(txtQuantite);
-		contentPane.add(btAchat);
+		contentPane.add(btVente);
 
-		btAchat.addActionListener(this);
-
+		btVente.addActionListener(this);
 		this.setVisible(true);
 	}
 
