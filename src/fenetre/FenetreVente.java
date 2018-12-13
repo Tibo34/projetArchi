@@ -11,10 +11,12 @@ public class FenetreVente extends JFrame implements ActionListener {
 	private JTextField txtQuantite;
 	private JComboBox<String> combo;
 	private I_Catalogue catalogue;
+	private String[] lesProduits;
 
 	public FenetreVente(I_Catalogue c) {
 		setTitle("Vente");
-		setBounds(500, 500, 200, 125);
+		setBounds(500, 500, 250, 175);
+		lesProduits=c.getNomProduits();
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new FlowLayout());
 		btVente = new JButton("Vente");

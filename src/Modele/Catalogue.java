@@ -100,11 +100,12 @@ public class Catalogue implements I_Catalogue {
 
     @Override
     public String[] getNomProduits() {
-        ArrayList<String> noms = new ArrayList<>();
+        String[]noms = new String[produits.size()];
+        int i=0;
         for (I_Produit produit : this.produits) {
-            noms.add(produit.getNom());
+            noms[i++]=produit.getNom();
         }
-        return (String[]) noms.toArray();
+        return  noms;
     }
 
     @Override
