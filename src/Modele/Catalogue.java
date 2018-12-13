@@ -1,5 +1,7 @@
 package Modele;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -118,4 +120,35 @@ public class Catalogue implements I_Catalogue {
     public void clear() {
         this.produits = new ArrayList<>();
     }
+    
+    @Override
+    public String toString() {
+    	String str="Catalogue : ";
+    	for(I_Produit p : produits ) {
+    		str+=p.toString();
+    	}
+    	return str;
+    }
+    
+    public String formatDouble(double a) {
+    	DecimalFormat format=new DecimalFormat("#0.##");    	
+    	String s=format.format(a); 	
+    	return s;
+	}
+    
+    
+   
+	
+
+	@Override
+    public String getTextCatalogue() {
+		String str="";
+		for(I_Produit p : produits) {
+			str+=p.getNom()+" prixHT: "+p.getPrixUnitaireHT()+"€ prixTTC: "+formatDouble(p.getPrixUnitaireTTC())+
+					"€ quantité en stock: "+formatDouble(p.getQuantite())+"\n";
+		}
+		str+="\n\n\n";
+		str+="Montant total TTC en stock: "+formatDouble(getMontantTotalTTC())+"€";		
+		return str;
+	}
 }

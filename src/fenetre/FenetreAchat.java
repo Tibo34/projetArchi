@@ -3,14 +3,18 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import Modele.I_Catalogue;
+
 public class FenetreAchat extends JFrame implements ActionListener {
 
 	private JButton btAchat;
 	private JTextField txtQuantite;
 	private JComboBox<String> combo;
+	private I_Catalogue catalogue;
 
-	public FenetreAchat(String[] lesProduits) {
-
+	public FenetreAchat(I_Catalogue c) {
+		String[]lesProduits;
+		lesProduits=new String[10];
 		setTitle("Achat");
 		setBounds(500, 500, 200, 125);
 		Container contentPane = getContentPane();

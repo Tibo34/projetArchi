@@ -80,7 +80,7 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
 //		String[] tabCategories = new String[] {"Bio", "Luxe" };
 		
 		if (e.getSource() == btAfficher)
-			ControllerStock.afficher();
+			ControllerStock.afficher(catalogue);
 		if (e.getSource() == btNouveauProduit)
 //			new FenetreNouveauProduit(tabCategories);
 			ControllerCreerSupprimer.afficherAjouter();
@@ -114,9 +114,5 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
 
 	
 	
-	public static void main(String[] args) {
-		
-		new FenetrePrincipale(c);
-	}
 
 }

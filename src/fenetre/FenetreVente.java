@@ -3,13 +3,16 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import Modele.I_Catalogue;
+
 public class FenetreVente extends JFrame implements ActionListener {
 
 	private JButton btVente;
 	private JTextField txtQuantite;
 	private JComboBox<String> combo;
+	private I_Catalogue catalogue;
 
-	public FenetreVente(String[] lesProduits) {
+	public FenetreVente(I_Catalogue c) {
 		setTitle("Vente");
 		setBounds(500, 500, 200, 125);
 		Container contentPane = getContentPane();

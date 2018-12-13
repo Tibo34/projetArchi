@@ -1,5 +1,8 @@
 package Modele;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 public class Produits implements I_Produit  {
 	
 	private int quantiteStock;
@@ -58,6 +61,8 @@ public class Produits implements I_Produit  {
 	public double getPrixUnitaireTTC() {
 		return prixUnitaireHT*(1+tauxTVA);
 	}
+	
+	
 
 	@Override
 	public double getPrixStockTTC() {
@@ -66,7 +71,7 @@ public class Produits implements I_Produit  {
 	
 	@Override
 	public String toString() {
-		return nom+"[ quantit� : "+quantiteStock+" taux TVA : "+tauxTVA;
+		return nom+"[ quantite : "+quantiteStock+" taux TVA : "+tauxTVA;
 	}
 	
 	public Produits CreerProduit(String name,double prixUHT,int qte) {

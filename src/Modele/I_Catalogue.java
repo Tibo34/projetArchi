@@ -13,5 +13,6 @@ public interface I_Catalogue {
 	public abstract double getMontantTotalTTC();
 	public abstract String toString();
 	public abstract void clear();
+	public abstract String getTextCatalogue();
 
 }
