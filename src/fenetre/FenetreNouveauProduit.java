@@ -3,6 +3,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import Modele.I_Catalogue;
+
 public class FenetreNouveauProduit extends JFrame implements ActionListener {
 
 	private JTextField txtPrixHT;
@@ -10,10 +12,11 @@ public class FenetreNouveauProduit extends JFrame implements ActionListener {
 	private JTextField txtQte;
 //	private JComboBox<String> combo;
 	private JButton btValider;
+	private I_Catalogue catalogue;
 
 //	public FenetreNouveauProduit(String[] lesCategories) {
 	public FenetreNouveauProduit() {	
-
+		catalogue=c;
 		setTitle("Creation Produit");
 		setBounds(500, 500, 200, 250);
 		Container contentPane = getContentPane();

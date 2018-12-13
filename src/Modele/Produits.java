@@ -63,5 +63,15 @@ public class Produits implements I_Produit  {
 	public double getPrixStockTTC() {
 		return getPrixUnitaireTTC()*quantiteStock;
 	}
+	
+	@Override
+	public String toString() {
+		return nom+"[ quantité : "+quantiteStock+" taux TVA : "+tauxTVA;
+	}
+	
+	public Produits CréerProduit(String name,double prixUHT,int qte) {
+		Produits p=new Produits(name,prixUHT,qte);
+		return p;
+	}
 
 }

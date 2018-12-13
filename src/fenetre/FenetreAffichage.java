@@ -3,12 +3,15 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import Modele.I_Catalogue;
+
 public class FenetreAffichage extends JFrame implements ActionListener {
 
 	private JButton btOK;
+	private I_Catalogue catalogue;
 	
-	public FenetreAffichage(String texte) {
-
+	public FenetreAffichage(I_Catalogue c) {
+		catalogue=c;
 		setTitle("Affichage");
 		setBounds(500, 500, 450, 250);
 		JPanel panHaut = new JPanel();
@@ -16,7 +19,7 @@ public class FenetreAffichage extends JFrame implements ActionListener {
 		panHaut.setLayout(new BorderLayout());
 		panBas.setLayout(new FlowLayout());
 		
-		JTextArea jtaSortie = new JTextArea(texte,10,5);
+		JTextArea jtaSortie = new JTextArea(getTextCatalogue(),10,5);
 		btOK = new JButton("Quitter");
 		
 		
@@ -31,6 +34,11 @@ public class FenetreAffichage extends JFrame implements ActionListener {
 		btOK.addActionListener(this);
 
 		this.setVisible(true);
+	}
+
+	private String getTextCatalogue() {
+		
+		return null;
 	}
 
 	/*
