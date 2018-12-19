@@ -15,7 +15,7 @@ public class Catalogue implements I_Catalogue {
 
     @Override
     public boolean addProduit(I_Produit produit) {
-        if(this.produits.indexOf(produit) == -1) {
+        if(!produits.contains(produit)) {
             this.produits.add(produit);
             return true;
         }
@@ -26,16 +26,16 @@ public class Catalogue implements I_Catalogue {
     public boolean addProduit(String nom, double prix, int qte) {
         if (prix <= 0 || qte <= 0) {
             return false;
-        }
+         }
 
         I_Produit produit = new Produits(nom, prix, qte);
         return addProduit(produit);
     }
 
     @Override
-    public int addProduits(List<I_Produit> l) {
+    public int addProduits(List<I_Produit> listProduitAdd) {
         int i = 0;
-        for (I_Produit produit : l) {
+        for (I_Produit produit : listProduitAdd) {
             if(this.addProduit(produit)) {
                 i++;
             }
@@ -44,14 +44,8 @@ public class Catalogue implements I_Catalogue {
     }
 
     @Override
-    public boolean removeProduit(String nom) {
-        try {
-            I_Produit produit = findProduit(nom);
-            produits.remove(produit);
-            return true;
-        } catch (NoSuchElementException e) {
-            return false;
-        }
+    public boolean removeProduit(String nom) {             
+         return  produits.remove( findProduit(nom));     
     }
 
     private I_Produit findProduit(String nom) {
@@ -60,49 +54,33 @@ public class Catalogue implements I_Catalogue {
                 return produit;
             }
         }
-
-        throw new NoSuchElementException("Produit introuvable");
+       return null;
     }
 
     @Override
-    public boolean acheterStock(String nomProduit, int qteAchetee) {
-        try {
+    public boolean acheterStock(String nomProduit, int qteAchetee) {       
             I_Produit produit = findProduit(nomProduit);
-            if (qteAchetee <= 0) {
+            if (produit==null||qteAchetee <= 0) {
                 return false;
-            }
-
-            produit.ajouter(qteAchetee);
-            return true;
-        } catch (NoSuchElementException e) {
-            return false;
-        }
+            }           
+            return  produit.ajouter(qteAchetee);
+      
     }
 
     @Override
-    public boolean vendreStock(String nomProduit, int qteVendue) {
-        try {
+    public boolean vendreStock(String nomProduit, int qteVendue) {       
             I_Produit produit = findProduit(nomProduit);
-            if (qteVendue <= 0) {
+            if (produit==null||qteVendue <= 0||produit.getQuantite() < qteVendue) {
                 return false;
-            }
-
-            if (produit.getQuantite() < qteVendue) {
-                throw new IllegalArgumentException("La quantité vendue ne peut être supérieure à la quantité stockée !");
-            }
-
-            produit.enlever(qteVendue);
-            return true;
-        } catch (NoSuchElementException e) {
-            return false;
-        }
+            }     
+           return  produit.enlever(qteVendue);      
     }
 
     @Override
     public String[] getNomProduits() {
         String[]noms = new String[produits.size()];
         int i=0;
-        for (I_Produit produit : this.produits) {
+        for (I_Produit produit : produits) {
             noms[i++]=produit.getNom();
         }
         return  noms;
@@ -119,7 +97,7 @@ public class Catalogue implements I_Catalogue {
 
     @Override
     public void clear() {
-        this.produits = new ArrayList<>();
+        this.produits.clear();
     }
     
     @Override
@@ -136,10 +114,7 @@ public class Catalogue implements I_Catalogue {
     	String s=format.format(a); 	
     	return s;
 	}
-    
    
-	
-
 	@Override
     public String getTextCatalogue() {
 		String str="";

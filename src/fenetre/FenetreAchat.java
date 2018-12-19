@@ -41,7 +41,10 @@ public class FenetreAchat extends JFrame implements ActionListener {
 		this.setVisible(true);
 	}
 	public void actionPerformed(ActionEvent e) {		
-		ControllerAchatVente.AchatProduit(combo.getSelectedItem().toString(), Integer.parseInt(txtQuantite.getText()),catalogue);
+		boolean r=ControllerAchatVente.AchatProduit(combo.getSelectedItem().toString(), Integer.parseInt(txtQuantite.getText()),catalogue);
+		if(r) {
+			JOptionPane.showMessageDialog(this, "produit acheté", "Achat", JOptionPane.NO_OPTION);
+		}
 		this.dispose();
 	}
 

@@ -1,21 +1,13 @@
 package Controlleur;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
-
-import com.sun.org.apache.xml.internal.resolver.Catalog;
-
 import Modele.Catalogue;
-import Modele.I_Catalogue;
 import fenetre.FenetrePrincipale;
 
-public class Main {
+public class MainGestion {
 	
 	public static void main(String[]args) {		 
 		 Catalogue catalogue=generateCatalogue();

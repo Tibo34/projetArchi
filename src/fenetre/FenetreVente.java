@@ -38,7 +38,11 @@ public class FenetreVente extends JFrame implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		ControllerAchatVente.VenteProduit(combo.getSelectedItem().toString(), Integer.parseInt(txtQuantite.getText()),catalogue);
+		boolean r=ControllerAchatVente.VenteProduit(combo.getSelectedItem().toString(), Integer.parseInt(txtQuantite.getText()),catalogue);
+		if(r) {
+			JOptionPane.showMessageDialog(this, "produit vendu", "Vendre", JOptionPane.NO_OPTION);
+		}
+		
 		this.dispose();
 	}
 

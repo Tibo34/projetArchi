@@ -50,7 +50,10 @@ public class FenetreNouveauProduit extends JFrame implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		ControllerCreerSupprimer.creerProduit(txtNom.getText(),Double.parseDouble(txtPrixHT.getText()),Integer.parseInt(txtQte.getText()),catalogue);
+		boolean r=ControllerCreerSupprimer.creerProduit(txtNom.getText(),Double.parseDouble(txtPrixHT.getText()),Integer.parseInt(txtQte.getText()),catalogue);
+		if(r) {
+			JOptionPane.showMessageDialog(this, "produit ajouté : "+txtNom.getText(), "Ajout", JOptionPane.NO_OPTION);
+		}
 		this.dispose();
 	}
 

@@ -1,5 +1,7 @@
 package Controlleur;
 
+import javax.swing.JOptionPane;
+
 import Modele.I_Catalogue;
 import fenetre.FenetreAchat;
 import fenetre.FenetreVente;
@@ -15,11 +17,11 @@ public class ControllerAchatVente {
 		FenetreVente f=new FenetreVente(c);	
 	}
 	
-	public static void AchatProduit(String nom,int qte,I_Catalogue catalogue) {
-		boolean r=catalogue.acheterStock(nom,qte);		
+	public static boolean AchatProduit(String nom,int qte,I_Catalogue catalogue) {
+		return catalogue.acheterStock(nom,qte);		
 	}
 	
-	public static void VenteProduit(String nom,int qte,I_Catalogue catalogue) {
-		boolean r=catalogue.vendreStock(nom,qte);		
+	public static boolean VenteProduit(String nom,int qte,I_Catalogue catalogue) {
+		return catalogue.vendreStock(nom,qte);		
 	}
 }

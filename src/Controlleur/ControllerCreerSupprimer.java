@@ -15,12 +15,13 @@ public class ControllerCreerSupprimer {
 		new FenetreSuppressionProduit(catalogue);
 	}
 	
-	public static void creerProduit(String nom, double prix, int qte,I_Catalogue catalogue) {
-		boolean r=catalogue.addProduit(nom, prix, qte);
+	public static boolean creerProduit(String nom, double prix, int qte,I_Catalogue catalogue) {
+		return catalogue.addProduit(nom, prix, qte);
 	}
 	
-	public static void supprimerProduit(String nom,I_Catalogue catalogue) {
-		boolean r=catalogue.removeProduit(nom);
+	public static boolean supprimerProduit(String nom,I_Catalogue catalogue) {
+		 return catalogue.removeProduit(nom);
+		
 	}
 	
 }
