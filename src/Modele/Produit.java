@@ -1,26 +1,30 @@
 package Modele;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
+import Utilitaire.Utilitaire;
 
-public class Produits implements I_Produit  {
+public class Produit implements I_Produit  {
 	
 	private int quantiteStock;
 	private String nom;
 	private double prixUnitaireHT;
 	private double tauxTVA=0.2;
 	
-	public Produits(String name,double prixUHT,int qte) {
-		this.nom=name;
+	public Produit(String name,double prixUHT,int qte) {		
+		this.nom=name;		
 		this.prixUnitaireHT=prixUHT;
 		this.quantiteStock=qte;		
 	}
-
+	
+	
 	@Override
-	public boolean ajouter(int qteAchetee) {
-		int init=quantiteStock;
-		quantiteStock+=qteAchetee;
-		return init<quantiteStock;
+	public boolean ajouter(int qteAchetee) {		
+		if(qteAchetee<0) {
+			return false;
+		}
+		else {
+			quantiteStock+=qteAchetee;
+			return true;
+		}
 	}
 
 	public int getQuantiteStock() {
@@ -36,10 +40,15 @@ public class Produits implements I_Produit  {
 	}
 
 	@Override
-	public boolean enlever(int qteVendue) {
-		int init=quantiteStock;
-		quantiteStock-=qteVendue;		
-		return init>quantiteStock;
+	public boolean enlever(int qteVendue) {		
+		if(qteVendue>quantiteStock) {
+			return false;
+		}
+		else {
+			quantiteStock-=qteVendue;
+			return true;
+		}
+		
 	}
 
 	@Override
@@ -71,11 +80,11 @@ public class Produits implements I_Produit  {
 	
 	@Override
 	public String toString() {
-		return nom+"[ quantite : "+quantiteStock+" taux TVA : "+tauxTVA;
+		return nom+" - prix HT : "+Utilitaire.formatDouble(prixUnitaireHT)+" € - prix TTC : "+Utilitaire.formatDouble(getPrixUnitaireTTC())+" € - quantité en stock : "+quantiteStock;
 	}
 	
-	public Produits CreerProduit(String name,double prixUHT,int qte) {
-		Produits p=new Produits(name,prixUHT,qte);
+	public Produit CreerProduit(String name,double prixUHT,int qte) {
+		Produit p=new Produit(name,prixUHT,qte);
 		return p;
 	}
 

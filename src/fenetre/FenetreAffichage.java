@@ -20,7 +20,7 @@ public class FenetreAffichage extends JFrame implements ActionListener {
 		panHaut.setLayout(new BorderLayout());
 		panBas.setLayout(new FlowLayout());
 		
-		JTextArea jtaSortie = new JTextArea(catalogue.getTextCatalogue(),10,5);
+		JTextArea jtaSortie = new JTextArea(catalogue.toString(),10,5);
 		btOK = new JButton("Quitter");
 		
 		
