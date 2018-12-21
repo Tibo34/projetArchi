@@ -4,6 +4,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import Controlleur.ControllerAchatVente;
+import Controlleur.MainGestion;
 import Modele.I_Catalogue;
 
 public class FenetreVente extends JFrame implements ActionListener {
@@ -29,7 +30,7 @@ public class FenetreVente extends JFrame implements ActionListener {
 		combo.setPreferredSize(new Dimension(100, 20));
 		contentPane.add(new JLabel("Produit"));
 		contentPane.add(combo);
-		contentPane.add(new JLabel("Quantité vendue"));
+		contentPane.add(new JLabel("Quantit? vendue"));
 		contentPane.add(txtQuantite);
 		contentPane.add(btVente);
 
@@ -38,7 +39,10 @@ public class FenetreVente extends JFrame implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		boolean r=ControllerAchatVente.VenteProduit(combo.getSelectedItem().toString(), Integer.parseInt(txtQuantite.getText()),catalogue);
+		String text = txtQuantite.getText();
+		if (MainGestion.checkQte(this, text)) return;
+
+		boolean r=ControllerAchatVente.VenteProduit(combo.getSelectedItem().toString(), Integer.parseInt(text),catalogue);
 		if(r) {
 			JOptionPane.showMessageDialog(this, "produit vendu", "Vendre", JOptionPane.NO_OPTION);
 		}
