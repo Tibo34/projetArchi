@@ -13,7 +13,7 @@ public class FenetreSuppressionProduit extends JFrame implements ActionListener 
 	private I_Catalogue catalogue;
 	private String[] lesProduits;
 	
-	public FenetreSuppressionProduit(I_Catalogue c) {
+	public FenetreSuppressionProduit(JFrame fenetrePrincipale, I_Catalogue c) {
 		catalogue=c;
 		setTitle("Suppression produit");
 		lesProduits=c.getNomProduits();

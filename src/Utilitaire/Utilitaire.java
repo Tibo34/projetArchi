@@ -2,6 +2,10 @@ package Utilitaire;
 
 import java.text.DecimalFormat;
 
+import fenetre.ConvertDoubleExcpetion;
+import fenetre.ConvertIntegerException;
+import fenetre.StringException;
+
 public class Utilitaire {
 	
 	 public static String formatDouble(double a) {
@@ -25,5 +29,34 @@ public class Utilitaire {
 	    	a/=100;
 	    	return a; 
 	    }
+	 
+	 public static String extractString(String str) throws StringException {
+			if(str.isEmpty()) {
+				throw new StringException();
+			}
+			return str;
+		}
+
+	 public static int convertInteger(String str) throws ConvertIntegerException {
+			int num=0;
+			try {
+				num=Integer.parseInt(str);
+			}
+			catch(NumberFormatException e) {
+				throw new ConvertIntegerException();
+			}
+			return num;
+		}
+
+	 public static double convertDouble(String str) throws ConvertDoubleExcpetion {
+			double num=0;
+			try {
+				num=Double.parseDouble(str);
+			}
+			catch(NumberFormatException e) {
+				throw new ConvertDoubleExcpetion();
+			}
+			return num;
+		}
 
 }

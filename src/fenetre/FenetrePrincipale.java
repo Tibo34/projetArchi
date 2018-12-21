@@ -77,23 +77,22 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
    Quand l'application fonctionnera, il faudra bien sûr récupérer les noms des produits dans le Catalogue */
 		//String[] tabProduits = new String[] { "Mars", "Raider", "Twix", "Treets", "M&M's", "Smarties" };
 /* Même chose pour tabCategories (partie 4) */ 		
-//		String[] tabCategories = new String[] {"Bio", "Luxe" };
-		
+//		String[] tabCategories = new String[] {"Bio", "Luxe" };		
 		if (e.getSource() == btAfficher)
-			ControllerStock.afficher(catalogue);
+			ControllerStock.afficher(this,catalogue);
 		if (e.getSource() == btNouveauProduit)
 //			new FenetreNouveauProduit(tabCategories);
-			ControllerCreerSupprimer.afficherAjouter(catalogue);
+			ControllerCreerSupprimer.afficherAjouter(this,catalogue);
 		if (e.getSource() == btSupprimerProduit)			
-			ControllerCreerSupprimer.afficherSupprimer(catalogue);
+			ControllerCreerSupprimer.afficherSupprimer(this,catalogue);
 //		if (e.getSource() == btNouvelleCategorie)
 //			new FenetreNouvelleCategorie();
 //		if (e.getSource() == btSupprimerCategorie)
 //			new FenetreSuppressionCategorie(tabCategories);
 		if (e.getSource() == btAchat)
-			ControllerAchatVente.AfficheAchat(catalogue);
+			ControllerAchatVente.AfficheAchat(this,catalogue);
 		if (e.getSource() == btVente)
-			ControllerAchatVente.AfficheVente(catalogue);
+			ControllerAchatVente.AfficheVente(this,catalogue);
 		if (e.getSource() == btQuitter){
 			System.out.println("Au revoir");
 			System.exit(0);

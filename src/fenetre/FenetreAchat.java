@@ -18,7 +18,7 @@ public class FenetreAchat extends JFrame implements ActionListener {
 	private I_Catalogue catalogue;
 	private String[] lesProduits;
 
-	public FenetreAchat(I_Catalogue c) {
+	public FenetreAchat(FenetrePrincipale fenetre, I_Catalogue c) {
 		lesProduits=c.getNomProduits();
 		catalogue=c;
 		setTitle("Achat");		

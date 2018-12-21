@@ -5,6 +5,7 @@ import javax.swing.*;
 
 import Controlleur.ControllerCreerSupprimer;
 import Modele.I_Catalogue;
+import Utilitaire.Utilitaire;
 
 public class FenetreNouveauProduit extends JFrame implements ActionListener {
 
@@ -49,12 +50,40 @@ public class FenetreNouveauProduit extends JFrame implements ActionListener {
 		setVisible(true);
 	}
 
-	public void actionPerformed(ActionEvent e) {
-		boolean r=ControllerCreerSupprimer.creerProduit(txtNom.getText(),Double.parseDouble(txtPrixHT.getText()),Integer.parseInt(txtQte.getText()),catalogue);
-		if(r) {
-			JOptionPane.showMessageDialog(this, "produit ajouté : "+txtNom.getText(), "Ajout", JOptionPane.NO_OPTION);
-		}
+	public void actionPerformed(ActionEvent e) {		
+			boolean r=false;
+			String nom="";
+			String ajouteEchoue = "le produit"+nom+" n'a pas été ajouté ";
+			String ajoutReussi="produit ajouté : "+nom;
+			try {
+				nom=Utilitaire.extractString(txtNom.getText());
+				ajouteEchoue="le produit"+nom+" n'a pas été ajouté ";
+				ajoutReussi="produit ajouté : "+nom;
+				r = ControllerCreerSupprimer.creerProduit(nom,Utilitaire.convertDouble(txtPrixHT.getText()),Utilitaire.convertInteger(txtQte.getText()),catalogue);
+			} catch (ConvertDoubleExcpetion e1) {
+				PopupMess.display(this, ajouteEchoue);
+				e1.printStackTrace();
+				return;
+			} catch (ConvertIntegerException e1) {
+				PopupMess.display(this, ajouteEchoue);
+				e1.printStackTrace();
+				return;
+			} catch (StringException e1) {
+				PopupMess.display(this,ajouteEchoue);
+				e1.printStackTrace();
+				return;
+			}
+			if(r) {
+				PopupMess.display(this, ajoutReussi);
+			}
+			else {
+				PopupMess.display(this, ajouteEchoue);
+				return;
+			}
+		
 		this.dispose();
 	}
+
+	
 
 }
