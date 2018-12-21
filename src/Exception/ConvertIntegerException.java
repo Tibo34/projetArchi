@@ -1,4 +1,4 @@
-package fenetre;
+package Exception;
 
 public class ConvertIntegerException extends Exception {
 

@@ -2,9 +2,9 @@ package Utilitaire;
 
 import java.text.DecimalFormat;
 
-import fenetre.ConvertDoubleExcpetion;
-import fenetre.ConvertIntegerException;
-import fenetre.StringException;
+import Exception.ConvertDoubleExcpetion;
+import Exception.ConvertIntegerException;
+import Exception.StringException;
 
 public class Utilitaire {
 	
