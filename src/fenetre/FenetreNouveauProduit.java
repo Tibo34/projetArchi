@@ -4,6 +4,10 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import Controlleur.ControllerCreerSupprimer;
+import Exception.ConvertDoubleExcpetion;
+import Exception.ConvertIntegerException;
+import Exception.CreationProduitException;
+import Exception.StringException;
 import Modele.I_Catalogue;
 import Utilitaire.Utilitaire;
 
@@ -60,6 +64,9 @@ public class FenetreNouveauProduit extends JFrame implements ActionListener {
 				ajouteEchoue="le produit"+nom+" n'a pas été ajouté ";
 				ajoutReussi="produit ajouté : "+nom;
 				r = ControllerCreerSupprimer.creerProduit(nom,Utilitaire.convertDouble(txtPrixHT.getText()),Utilitaire.convertInteger(txtQte.getText()),catalogue);
+				if(!r) {
+					throw new CreationProduitException();
+				}
 			} catch (ConvertDoubleExcpetion e1) {
 				PopupMess.display(this, ajouteEchoue);
 				e1.printStackTrace();
@@ -73,13 +80,13 @@ public class FenetreNouveauProduit extends JFrame implements ActionListener {
 				e1.printStackTrace();
 				return;
 			}
-			if(r) {
-				PopupMess.display(this, ajoutReussi);
-			}
-			else {
-				PopupMess.display(this, ajouteEchoue);
+			catch(CreationProduitException e1) {
+				PopupMess.display(this,ajouteEchoue);
+				e1.printStackTrace();
 				return;
 			}
+			PopupMess.display(this, ajoutReussi);
+			
 		
 		this.dispose();
 	}
