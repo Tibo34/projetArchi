@@ -1,6 +1,10 @@
 package Utilitaire;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.DecimalFormat;
+import java.util.Properties;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -79,4 +83,15 @@ public class Utilitaire {
 			return false;
 		}
 
+	public static Properties LoadFileProperties() {
+		String file="properties.propertie";
+		Properties p=new Properties();
+		 try(InputStream in=new FileInputStream(file)){
+			 p.load(in);
+		 }
+		 catch(IOException e) {
+			 e.printStackTrace();
+		 }
+		 return p;
+	}
 }
