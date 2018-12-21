@@ -2,6 +2,9 @@ package Utilitaire;
 
 import java.text.DecimalFormat;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import Exception.ConvertDoubleExcpetion;
 import Exception.ConvertIntegerException;
 import Exception.StringException;
@@ -57,6 +60,23 @@ public class Utilitaire {
 				throw new ConvertDoubleExcpetion();
 			}
 			return num;
+		}
+	 
+	 public static boolean checkQte(JFrame parentComponent, String text) {
+			int qte;
+			try {
+				qte = Integer.parseInt(text);
+			} catch (NumberFormatException ex) {
+				JOptionPane.showMessageDialog(parentComponent, "La quantité entrée n'est pas un nombre", "Erreur", JOptionPane.ERROR_MESSAGE);
+				return true;
+
+			}
+
+			if (qte <= 0) {
+				JOptionPane.showMessageDialog(parentComponent, "La quantité entrée ne peut être négative ou nulle", "Erreur", JOptionPane.ERROR_MESSAGE);
+				return true;
+			}
+			return false;
 		}
 
 }

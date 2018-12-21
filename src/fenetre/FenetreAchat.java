@@ -10,6 +10,7 @@ import com.sun.xml.internal.ws.api.server.ContainerResolver;
 
 import Controlleur.ControllerAchatVente;
 import Modele.I_Catalogue;
+import Utilitaire.Utilitaire;
 
 public class FenetreAchat extends JFrame implements ActionListener {
 
@@ -43,11 +44,11 @@ public class FenetreAchat extends JFrame implements ActionListener {
 	}
 	public void actionPerformed(ActionEvent e) {
 		String text = txtQuantite.getText();
-		if (MainGestion.checkQte(this, text)) return;
+		if (Utilitaire.checkQte(this, text)) return;
 
 		boolean r=ControllerAchatVente.AchatProduit(combo.getSelectedItem().toString(), Integer.parseInt(text), catalogue);
 		if(r) {
-			JOptionPane.showMessageDialog(this, "produit acheté", "Achat", JOptionPane.NO_OPTION);
+			PopupMess.display(this, "produit acheté");
 		}
 		this.dispose();
 	}

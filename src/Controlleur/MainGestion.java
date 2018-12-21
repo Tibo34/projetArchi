@@ -47,20 +47,5 @@ public class MainGestion {
 		return Double.parseDouble(value.split(" ")[1].split(":")[1]);
 	}
 
-	public static boolean checkQte(JFrame parentComponent, String text) {
-		int qte;
-		try {
-			qte = Integer.parseInt(text);
-		} catch (NumberFormatException ex) {
-			JOptionPane.showMessageDialog(parentComponent, "La quantité entrée n'est pas un nombre", "Erreur", JOptionPane.ERROR_MESSAGE);
-			return true;
-
-		}
-
-		if (qte <= 0) {
-			JOptionPane.showMessageDialog(parentComponent, "La quantité entrée ne peut être négative ou nulle", "Erreur", JOptionPane.ERROR_MESSAGE);
-			return true;
-		}
-		return false;
-	}
+	
 }

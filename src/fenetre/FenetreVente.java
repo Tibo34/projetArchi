@@ -6,6 +6,7 @@ import javax.swing.*;
 import Controlleur.ControllerAchatVente;
 import Controlleur.MainGestion;
 import Modele.I_Catalogue;
+import Utilitaire.Utilitaire;
 
 public class FenetreVente extends JFrame implements ActionListener {
 
@@ -40,7 +41,7 @@ public class FenetreVente extends JFrame implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		String text = txtQuantite.getText();
-		if (MainGestion.checkQte(this, text)) return;
+		if (Utilitaire.checkQte(this, text)) return;
 
 		boolean r=ControllerAchatVente.VenteProduit(combo.getSelectedItem().toString(), Integer.parseInt(text),catalogue);
 		if(r) {
