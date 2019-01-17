@@ -22,7 +22,6 @@ public class Catalogue implements I_Catalogue {
     public static Catalogue getInstance() {
         if (instance == null)
             instance = new Catalogue();
-
         return instance;
     }
 

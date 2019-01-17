@@ -4,13 +4,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map.Entry;
 import java.util.Properties;
+
+import BDD.I_ProduitDAO;
+import BDD.ProduitDAOFactory;
 import Modele.Catalogue;
 import Modele.I_Catalogue;
 import fenetre.FenetrePrincipale;
 
-import javax.swing.*;
-
-import BDD.ProduitDAO;
 
 public class MainGestion {
 	
@@ -21,12 +21,12 @@ public class MainGestion {
 	
 	public static I_Catalogue generateCatalogueBD() {
 		I_Catalogue catalogue = Catalogue.getInstance();
-		ProduitDAO dao=new ProduitDAO();
+		I_ProduitDAO dao=ProduitDAOFactory.getDAO();
 		catalogue.addProduits(dao.getAllProduits());
 		return catalogue;
 	}
 
-	public static I_Catalogue generateCatalogue() {
+	public static I_Catalogue generateCatalogueProperties() {
 		Properties p = LoadFileProperties();
 		I_Catalogue catalogue = Catalogue.getInstance();
 		for(Entry<Object, Object> entre : p.entrySet()) {
