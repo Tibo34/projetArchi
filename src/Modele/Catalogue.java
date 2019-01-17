@@ -15,8 +15,15 @@ public class Catalogue implements I_Catalogue {
 	
     private ArrayList<I_Produit> produits = new ArrayList<>();
 
-    public Catalogue() {
+    private static Catalogue instance = null;
 
+    private Catalogue() {}
+
+    public static Catalogue getInstance() {
+        if (instance == null)
+            instance = new Catalogue();
+
+        return instance;
     }
 
     @Override
@@ -36,8 +43,6 @@ public class Catalogue implements I_Catalogue {
           	}          	
           	return produits.add(p);
     }
-    
-  
     
     private String supprimeEspace(String nom) {		
 		nom=nom.replaceAll("\\s", " ");
@@ -63,9 +68,7 @@ public class Catalogue implements I_Catalogue {
     		}    		
     	}
        return i;
-     }  
-
-	
+    }
 
 	private boolean nomExist(String nom) {
     	String[]noms=getNomProduits();
@@ -129,8 +132,6 @@ public class Catalogue implements I_Catalogue {
         }
         return Utilitaire.roundDouble(total);
     }
-    
-   
 
     @Override
     public void clear() {
@@ -144,11 +145,7 @@ public class Catalogue implements I_Catalogue {
 			str+=p.toString()+"\n";
 		}
 		str+="\n";
-		str+="Montant total TTC du stock : "+Utilitaire.formatDouble(getMontantTotalTTC())+" €";		
+		str+="Montant total TTC du stock : "+Utilitaire.formatDouble(getMontantTotalTTC())+" ï¿½";		
 		return str;
     }
-    
-   
-   
-	
 }
