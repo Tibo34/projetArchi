@@ -9,6 +9,8 @@ import java.util.NoSuchElementException;
 
 import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
+import BDD.I_ProduitDAO;
+import BDD.ProduitDAOFactory;
 import Utilitaire.Utilitaire;
 
 public class Catalogue implements I_Catalogue {
@@ -16,6 +18,7 @@ public class Catalogue implements I_Catalogue {
     private ArrayList<I_Produit> produits = new ArrayList<>();
 
     private static Catalogue instance = null;
+    private I_ProduitDAO bdd=ProduitDAOFactory.getDAOInstance();
 
     private Catalogue() {}
 
@@ -39,7 +42,10 @@ public class Catalogue implements I_Catalogue {
           	I_Produit p=createProduit(nom, prix, qte);
           	if(p==null) {
           		return false;
-          	}          	
+          	}
+          	else {
+          		bdd.addNouveauProduit(p);
+          	}
           	return produits.add(p);
     }
     
@@ -80,8 +86,15 @@ public class Catalogue implements I_Catalogue {
     }
 
     @Override
-    public boolean removeProduit(String nom) {             
-         return  produits.remove( findProduit(nom));     
+    public boolean removeProduit(String nom) { 
+    	I_Produit p=findProduit(nom);
+    	if(p==null) {
+    		return false;
+    	}
+    	else {
+    		bdd.delProduit(p);
+    	}
+         return  produits.remove(p);     
     }
 
     private I_Produit findProduit(String nom) {
@@ -99,8 +112,7 @@ public class Catalogue implements I_Catalogue {
             if (produit==null||qteAchetee <= 0) {
                 return false;
             }           
-            return  produit.ajouter(qteAchetee);
-      
+            return  produit.ajouter(qteAchetee);      
     }
 
     @Override

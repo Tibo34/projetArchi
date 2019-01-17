@@ -21,7 +21,7 @@ public class MainGestion {
 	
 	public static I_Catalogue generateCatalogueBD() {
 		I_Catalogue catalogue = Catalogue.getInstance();
-		I_ProduitDAO dao=ProduitDAOFactory.getDAO();
+		I_ProduitDAO dao=ProduitDAOFactory.getDAOInstance();
 		catalogue.addProduits(dao.getAllProduits());
 		return catalogue;
 	}
