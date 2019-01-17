@@ -1,6 +1,7 @@
 package BDD;
 
 import java.sql.DriverManager;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,6 +23,7 @@ public class ProduitDAO implements I_ProduitDAO {
 	private String driver;
 	private Statement st;
 	private PreparedStatement pst;
+	private CallableStatement cst;
 	private ResultSet rs;
 
 	public ProduitDAO() {
@@ -65,8 +67,16 @@ public class ProduitDAO implements I_ProduitDAO {
 
 	@Override
 	public boolean addNouveauProduit(I_Produit p) {
-		// TODO Auto-generated method stub
-		return false;
+		try {
+			cst=cn.prepareCall("call addProduit(?,?,?)");
+			cst.setString(1, p.getNom());
+			cst.setDouble(2, p.getPrixUnitaireHT());
+			cst.setInt(3, p.getQuantite());
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}		
+		return true;
 	}
 
 	@Override
