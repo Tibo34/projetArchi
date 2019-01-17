@@ -63,4 +63,22 @@ public class ProduitDAO implements I_ProduitDAO {
 
 	}
 
+	@Override
+	public boolean addNouveauProduit(I_Produit p) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean achatProduit(I_Produit p, int qte) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean venteProduit(I_Produit p, int qte) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }
