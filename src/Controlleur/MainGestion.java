@@ -5,20 +5,30 @@ import java.io.InputStream;
 import java.util.Map.Entry;
 import java.util.Properties;
 import Modele.Catalogue;
+import Modele.I_Catalogue;
 import fenetre.FenetrePrincipale;
 
 import javax.swing.*;
 
+import BDD.ProduitDAO;
+
 public class MainGestion {
 	
 	public static void main(String[]args) {		 
-		 Catalogue catalogue=generateCatalogue();
+		 I_Catalogue catalogue=generateCatalogueBD();
 		 FenetrePrincipale fmain=new FenetrePrincipale(catalogue);		
 	}
 	
-	public static Catalogue generateCatalogue() {		
+	public static I_Catalogue generateCatalogueBD() {
+		I_Catalogue catalogue=new Catalogue();
+		ProduitDAO dao=new ProduitDAO();	
+		catalogue.addProduits(dao.getAllProduits());
+		return catalogue;
+	}
+	
+	public static I_Catalogue generateCatalogue() {		
 		Properties p=LoadFileProperties();
-		Catalogue catalogue=new Catalogue();
+		I_Catalogue catalogue=new Catalogue();
 		for(Entry<Object, Object> entre : p.entrySet()) {
 			double prix=getPrix((String) entre.getValue());
 			int qte=getQte((String) entre.getValue());
