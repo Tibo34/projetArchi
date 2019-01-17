@@ -13,8 +13,8 @@ import Modele.I_Produit;
 import Modele.Produit;
 
 
-public class ProduitDAO {
-	
+public class ProduitDAO implements I_ProduitDAO {
+
 	private Connection cn;
 	private String url;
 	private String login;
@@ -23,7 +23,7 @@ public class ProduitDAO {
 	private Statement st;
 	private PreparedStatement pst;
 	private ResultSet rs;
-	
+
 	public ProduitDAO() {
 		driver="oracle.jdbc.driver.OracleDriver";
 		url="jbdc:oracle:thin:@162.38.222.149:1521:iut";
@@ -41,7 +41,7 @@ public class ProduitDAO {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public List<I_Produit>getAllProduits() {
 		try {
 			rs=st.executeQuery("select * from Produits order by nomProduit");
@@ -49,7 +49,7 @@ public class ProduitDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		List<I_Produit> listproduit=new ArrayList<I_Produit>();		
+		List<I_Produit> listproduit=new ArrayList<I_Produit>();
 		try {
 			while(rs.next()) {
 				I_Produit p=new Produit(rs.getString(2), rs.getDouble(3),rs.getInt(4));
@@ -60,7 +60,7 @@ public class ProduitDAO {
 			e.printStackTrace();
 		}
 		return listproduit;
-		
+
 	}
 
 }
