@@ -1,5 +1,7 @@
 package Modele;
 
+import BDD.I_ProduitDAO;
+import BDD.ProduitDAOFactory;
 import Utilitaire.Utilitaire;
 
 public class Produit implements I_Produit  {
@@ -8,6 +10,7 @@ public class Produit implements I_Produit  {
 	private String nom;
 	private double prixUnitaireHT;
 	private double tauxTVA=0.2;
+	private I_ProduitDAO bdd=ProduitDAOFactory.getDAOInstance();
 	
 	public Produit(String name,double prixUHT,int qte) {		
 		this.nom=name;		
@@ -23,9 +26,24 @@ public class Produit implements I_Produit  {
 		}
 		else {
 			quantiteStock+=qteAchetee;
+			bdd.achatProduit(this);
 			return true;
 		}
 	}
+
+	@Override
+	public boolean enlever(int qteVendue) {		
+		if(qteVendue>quantiteStock) {
+			return false;
+		}
+		else {
+			quantiteStock-=qteVendue;
+			bdd.venteProduit(this);
+			return true;
+		}
+		
+	}
+
 
 	public int getQuantiteStock() {
 		return quantiteStock;
@@ -37,18 +55,6 @@ public class Produit implements I_Produit  {
 
 	public void setNom(String nom) {
 		this.nom = nom;
-	}
-
-	@Override
-	public boolean enlever(int qteVendue) {		
-		if(qteVendue>quantiteStock) {
-			return false;
-		}
-		else {
-			quantiteStock-=qteVendue;
-			return true;
-		}
-		
 	}
 
 	@Override

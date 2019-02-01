@@ -1,11 +1,15 @@
-﻿DROP TABLE Produits CASCADE CONSTRAINTS;
+﻿set define off
+DROP TABLE Produits CASCADE CONSTRAINTS;
 
-create or replace sequence seqNumProduit
+drop sequence seqNumProduit;
+
+create sequence seqNumProduit
 start with 1;
 
 CREATE TABLE Produits
-(numProduit NUMBER, nomProduit VARCHAR(20), prixHT NUMBER, quantite INTEGER,
-CONSTRAINT pk_numProduit PRIMARY KEY (numProduit)) ;
+(numProduit NUMBER, nomProduit VARCHAR(20) not null, prixHT NUMBER, quantite INTEGER,
+CONSTRAINT pk_numProduit PRIMARY KEY (numProduit),
+constraint u_nomProduit UNIQUE (nomProduit));
 
 
 
@@ -17,8 +21,21 @@ end;
 
 
 call addProduit('Treets', 1.3,5);
-call addProduit('M&M\'s', 2.5,5);
+call addProduit('M&Ms', 2.5,5);
 call addProduit('Raider', 1.0,5);
 call addProduit('Smarties', 1.5,5);
 call addProduit('Twix', 1.2,5);
 call addProduit('Mars', 1.1,5);
+
+
+delete from Produits where nomProduit="Mars";
+
+delete from Produits where nomProduit="M&M\'s";
+delete from Produits where nomProduit="Raider";
+
+delete from Produits where nomProduit="Smarties";
+delete from Produits where nomProduit="Twix";
+delete from Produits where nomProduit="Treets";
+
+
+
