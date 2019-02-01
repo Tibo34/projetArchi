@@ -18,13 +18,19 @@ public class Catalogue implements I_Catalogue {
     private ArrayList<I_Produit> produits = new ArrayList<>();
 
     private static Catalogue instance = null;
-    private I_ProduitDAO bdd=ProduitDAOFactory.getDAOInstance();
+    private static I_ProduitDAO bdd=null;
 
     private Catalogue() {}
+    
+    private Catalogue(List<I_Produit> p) {
+    	produits.addAll(p);
+    }
 
     public static Catalogue getInstance() {
         if (instance == null)
-            instance = new Catalogue();
+        	bdd=ProduitDAOFactory.getDAOInstance();
+        	List<I_Produit> list=bdd.getAllProduits();
+            instance = new Catalogue(bdd.getAllProduits());
         return instance;
     }
 
@@ -40,13 +46,15 @@ public class Catalogue implements I_Catalogue {
     public boolean addProduit(String nom, double prix, int qte) {
     		nom=supprimeEspace(nom);
           	I_Produit p=createProduit(nom, prix, qte);
-          	if(p==null) {
-          		return false;
+          	if(p!=null) {
+          		bdd.addNouveauProduit(p);
+          		return produits.add(p);
           	}
           	else {
-          		bdd.addNouveauProduit(p);
+          		return false;
           	}
-          	return produits.add(p);
+          	
+          	 
     }
     
     private String supprimeEspace(String nom) {		
@@ -156,7 +164,7 @@ public class Catalogue implements I_Catalogue {
 			str+=p.toString()+"\n";
 		}
 		str+="\n";
-		str+="Montant total TTC du stock : "+Utilitaire.formatDouble(getMontantTotalTTC())+" ï¿½";		
+		str+="Montant total TTC du stock : "+Utilitaire.formatDouble(getMontantTotalTTC())+" €";		
 		return str;
     }
 }

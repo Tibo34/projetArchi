@@ -44,7 +44,7 @@ public class ProduitDAO implements I_ProduitDAO {
 		}
 	}
 
-	public List<I_Produit>getAllProduits() {
+	public List<I_Produit> getAllProduits() {
 		try {
 			rs=st.executeQuery("select * from Produits order by nomProduit");
 		} catch (SQLException e) {
@@ -58,7 +58,6 @@ public class ProduitDAO implements I_ProduitDAO {
 				listproduit.add(p);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return listproduit;
@@ -72,6 +71,7 @@ public class ProduitDAO implements I_ProduitDAO {
 			cst.setString(1, p.getNom());
 			cst.setDouble(2, p.getPrixUnitaireHT());
 			cst.setInt(3, p.getQuantite());
+			cst.executeQuery();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
@@ -95,11 +95,11 @@ public class ProduitDAO implements I_ProduitDAO {
 
 	@Override
 	public boolean achatProduit(I_Produit p) {		
-		
 		try {
 			pst=cn.prepareStatement("update Produits set quantite=? where nomProduit=?");
 			pst.setString(2,p.getNom());
 			pst.setInt(1,p.getQuantite());
+			pst.executeQuery();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
@@ -113,6 +113,7 @@ public class ProduitDAO implements I_ProduitDAO {
 			pst=cn.prepareStatement("update Produits set quantite=? where nomProduit=?");
 			pst.setString(2,p.getNom());
 			pst.setInt(1,p.getQuantite());
+			pst.executeQuery();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
