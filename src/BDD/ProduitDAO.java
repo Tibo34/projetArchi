@@ -9,28 +9,27 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import Modele.I_Produit;
 import Modele.Produit;
+import Utilitaire.Utilitaire;
 
 
 public class ProduitDAO implements I_ProduitDAO {
-
 	private Connection cn;
-	private String url;
-	private String login;
-	private String mdp;
-	private String driver;
 	private Statement st;
 	private PreparedStatement pst;
 	private CallableStatement cst;
 	private ResultSet rs;
 
 	public ProduitDAO() {
-		driver="oracle.jdbc.driver.OracleDriver";
-		url="jbdc:oracle:thin:@162.38.222.149:1521:iut";
-		login="molinat";
-		mdp="123";
+		Properties dbProperties = Utilitaire.loadProperties("bdd.properties");
+
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = dbProperties.getProperty("url");
+		String login = dbProperties.getProperty("login");
+		String mdp = dbProperties.getProperty("mdp");
 		try {
 			Class.forName(driver);
 			cn=DriverManager.getConnection(url, login, mdp);
