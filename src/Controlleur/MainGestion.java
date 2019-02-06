@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map.Entry;
 import java.util.Properties;
-
 import BDD.I_ProduitDAO;
 import BDD.ProduitDAOFactory;
 import Modele.Catalogue;
@@ -25,7 +24,7 @@ public class MainGestion {
 		return catalogue;
 	}
 
-	public static I_Catalogue generateCatalogue() {
+	public static I_Catalogue generateCatalogueProperties() {
 		Properties p = LoadFileProperties();
 		I_Catalogue catalogue = Catalogue.getInstance();
 		for(Entry<Object, Object> entre : p.entrySet()) {

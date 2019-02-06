@@ -9,6 +9,8 @@ import java.util.NoSuchElementException;
 
 import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
+import BDD.I_ProduitDAO;
+import BDD.ProduitDAOFactory;
 import Utilitaire.Utilitaire;
 
 public class Catalogue implements I_Catalogue {
@@ -16,13 +18,19 @@ public class Catalogue implements I_Catalogue {
     private ArrayList<I_Produit> produits = new ArrayList<>();
 
     private static Catalogue instance = null;
+    private static I_ProduitDAO bdd=null;
 
     private Catalogue() {}
+    
+    private Catalogue(List<I_Produit> p) {
+    	produits.addAll(p);
+    }
 
     public static Catalogue getInstance() {
         if (instance == null)
-            instance = new Catalogue();
-
+        	bdd=ProduitDAOFactory.getDAOInstance();
+        	List<I_Produit> list=bdd.getAllProduits();
+            instance = new Catalogue(bdd.getAllProduits());
         return instance;
     }
 
@@ -38,10 +46,15 @@ public class Catalogue implements I_Catalogue {
     public boolean addProduit(String nom, double prix, int qte) {
     		nom=supprimeEspace(nom);
           	I_Produit p=createProduit(nom, prix, qte);
-          	if(p==null) {
+          	if(p!=null) {
+          		bdd.addNouveauProduit(p);
+          		return produits.add(p);
+          	}
+          	else {
           		return false;
-          	}          	
-          	return produits.add(p);
+          	}
+          	
+          	 
     }
     
     private String supprimeEspace(String nom) {		
@@ -81,8 +94,15 @@ public class Catalogue implements I_Catalogue {
     }
 
     @Override
-    public boolean removeProduit(String nom) {             
-         return  produits.remove( findProduit(nom));     
+    public boolean removeProduit(String nom) { 
+    	I_Produit p=findProduit(nom);
+    	if(p==null) {
+    		return false;
+    	}
+    	else {
+    		bdd.delProduit(p);
+    	}
+         return  produits.remove(p);     
     }
 
     private I_Produit findProduit(String nom) {
@@ -100,8 +120,7 @@ public class Catalogue implements I_Catalogue {
             if (produit==null||qteAchetee <= 0) {
                 return false;
             }           
-            return  produit.ajouter(qteAchetee);
-      
+            return  produit.ajouter(qteAchetee);      
     }
 
     @Override
@@ -145,7 +164,7 @@ public class Catalogue implements I_Catalogue {
 			str+=p.toString()+"\n";
 		}
 		str+="\n";
-		str+="Montant total TTC du stock : "+Utilitaire.formatDouble(getMontantTotalTTC())+" ï¿½";		
+		str+="Montant total TTC du stock : "+Utilitaire.formatDouble(getMontantTotalTTC())+" €";		
 		return str;
     }
 }
