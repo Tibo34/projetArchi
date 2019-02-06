@@ -1,7 +1,4 @@
 package Controlleur;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Map.Entry;
 import java.util.Properties;
 import BDD.I_ProduitDAO;
