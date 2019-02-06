@@ -75,26 +75,26 @@ public class ProduitDAO implements I_ProduitDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
-		}		
+		}
 		return true;
 	}
-	
+
 	@Override
-	public boolean delProduit(I_Produit p) {		
+	public boolean delProduit(I_Produit p) {
 		try {
 			pst=cn.prepareStatement("delete from Produits where nomProduit=?");
 			pst.setString(1,p.getNom());
 			pst.executeQuery();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return false;			
+			return false;
 		}
 		return true;
-		
+
 	}
 
 	@Override
-	public boolean achatProduit(I_Produit p) {		
+	public boolean achatProduit(I_Produit p) {
 		try {
 			pst=cn.prepareStatement("update Produits set quantite=? where nomProduit=?");
 			pst.setString(2,p.getNom());
