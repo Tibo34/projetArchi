@@ -34,11 +34,7 @@ public class ProduitDAO implements I_ProduitDAO {
 			Class.forName(driver);
 			cn=DriverManager.getConnection(url, login, mdp);
 			st=cn.createStatement();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
+		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
@@ -47,9 +43,9 @@ public class ProduitDAO implements I_ProduitDAO {
 		try {
 			rs=st.executeQuery("select * from Produits order by nomProduit");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 		List<I_Produit> listproduit=new ArrayList<I_Produit>();
 		try {
 			while(rs.next()) {
@@ -59,8 +55,8 @@ public class ProduitDAO implements I_ProduitDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return listproduit;
 
+		return listproduit;
 	}
 
 	@Override
@@ -89,7 +85,6 @@ public class ProduitDAO implements I_ProduitDAO {
 			return false;
 		}
 		return true;
-
 	}
 
 	@Override
