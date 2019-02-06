@@ -39,6 +39,23 @@ public class ProduitDAO implements I_ProduitDAO {
 		}
 	}
 
+	@Override
+	public I_Produit getProduit(String name) {
+        I_Produit p=null;
+	    try {
+            rs=st.executeQuery("select * from Produits where nomproduit=?");
+            pst.setString(1,name);
+            pst.executeQuery();
+
+            if (rs.next()) {
+                p=new Produit(rs.getString(2), rs.getDouble(3),rs.getInt(4));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return p;
+	}
+
 	public List<I_Produit> getAllProduits() {
 		try {
 			rs=st.executeQuery("select * from Produits order by nomProduit");
@@ -75,6 +92,20 @@ public class ProduitDAO implements I_ProduitDAO {
 	}
 
 	@Override
+	public boolean editProduit(I_Produit p) {
+		try {
+			pst=cn.prepareStatement("update Produits set quantite=? where nomProduit=?");
+			pst.setString(2,p.getNom());
+			pst.setInt(1,p.getQuantite());
+			pst.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	@Override
 	public boolean delProduit(I_Produit p) {
 		try {
 			pst=cn.prepareStatement("delete from Produits where nomProduit=?");
@@ -89,30 +120,11 @@ public class ProduitDAO implements I_ProduitDAO {
 
 	@Override
 	public boolean achatProduit(I_Produit p) {
-		try {
-			pst=cn.prepareStatement("update Produits set quantite=? where nomProduit=?");
-			pst.setString(2,p.getNom());
-			pst.setInt(1,p.getQuantite());
-			pst.executeQuery();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-		return true;
+		return this.editProduit(p);
 	}
 
 	@Override
 	public boolean venteProduit(I_Produit p) {
-		try {
-			pst=cn.prepareStatement("update Produits set quantite=? where nomProduit=?");
-			pst.setString(2,p.getNom());
-			pst.setInt(1,p.getQuantite());
-			pst.executeQuery();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-		return true;
+		return this.editProduit(p);
 	}
-
 }
