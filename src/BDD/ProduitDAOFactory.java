@@ -7,7 +7,7 @@ public class ProduitDAOFactory {
 
     public static I_ProduitDAO getDAO() {
         if (daoInstance == null)
-            daoInstance = new ProduitDAO();
+            daoInstance = new ProduitDAO_XML_Adapter();
 
         return daoInstance;
     }
