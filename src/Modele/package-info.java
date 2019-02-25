@@ -1,8 +1,5 @@
 /**
- * 
- */
-/**
  * @author thibaut
- * Ce package regroupe les classes métier
+ * Ce package regroupe les classes mÃ©tier
  */
 package Modele;

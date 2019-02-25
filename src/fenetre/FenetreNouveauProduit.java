@@ -29,7 +29,7 @@ public class FenetreNouveauProduit extends JFrame implements ActionListener {
 		contentPane.setLayout(new FlowLayout());
 		JLabel labNom = new JLabel("Nom produit");
 		JLabel labPrixHT = new JLabel("Prix Hors Taxe");
-		JLabel labQte = new JLabel("Quantité en stock");
+		JLabel labQte = new JLabel("QuantitÃ© en stock");
 //		JLabel labCategorie = new JLabel("Categorie");
 		contentPane.add(labNom);
 		txtNom = new JTextField(15);
@@ -57,12 +57,12 @@ public class FenetreNouveauProduit extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {		
 			boolean r=false;
 			String nom="";
-			String ajouteEchoue = "le produit"+nom+" n'a pas été ajouté ";
-			String ajoutReussi="produit ajouté : "+nom;
+			String ajouteEchoue = "le produit"+nom+" n'a pas Ã©tÃ© ajoutÃ© ";
+			String ajoutReussi="produit ajoutÃ© : "+nom;
 			try {
 				nom=Utilitaire.extractString(txtNom.getText());
-				ajouteEchoue="le produit"+nom+" n'a pas été ajouté ";
-				ajoutReussi="produit ajouté : "+nom;
+				ajouteEchoue="le produit"+nom+" n'a pas Ã©tÃ© ajoutÃ© ";
+				ajoutReussi="produit ajoutÃ© : "+nom;
 				r = ControllerCreerSupprimer.creerProduit(nom,Utilitaire.convertDouble(txtPrixHT.getText()),Utilitaire.convertInteger(txtQte.getText()),catalogue);
 				if(!r) {
 					throw new CreationProduitException();

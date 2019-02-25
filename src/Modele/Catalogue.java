@@ -159,7 +159,7 @@ public class Catalogue implements I_Catalogue {
 			str+=p.toString()+"\n";
 		}
 		str+="\n";
-		str+="Montant total TTC du stock : "+Utilitaire.formatDouble(getMontantTotalTTC())+" �";		
+		str+="Montant total TTC du stock : "+Utilitaire.formatDouble(getMontantTotalTTC())+" ";
 		return str;
     }
 }

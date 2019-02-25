@@ -3,6 +3,6 @@
  */
 /**
  * @author thibaut
- * Connection à la base de donnée
+ * Connection Ã  la base de donnÃ©e
  */
 package BDD;

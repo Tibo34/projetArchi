@@ -86,7 +86,7 @@ public class Produit implements I_Produit  {
 	
 	@Override
 	public String toString() {
-		return nom+" - prix HT : "+Utilitaire.formatDouble(prixUnitaireHT)+" � - prix TTC : "+Utilitaire.formatDouble(getPrixUnitaireTTC())+" � - quantit� en stock : "+quantiteStock;
+		return nom+" - prix HT : "+Utilitaire.formatDouble(prixUnitaireHT)+"  - prix TTC : "+Utilitaire.formatDouble(getPrixUnitaireTTC())+"  - quantité en stock : "+quantiteStock;
 	}
 	
 	public Produit CreerProduit(String name,double prixUHT,int qte) {
