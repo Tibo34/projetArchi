@@ -48,7 +48,6 @@ public class ProduitDAO implements I_ProduitDAO {
 		try {
 			rs=st.executeQuery("select * from Produits order by nomProduit");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		List<I_Produit> listproduit=new ArrayList<I_Produit>();
@@ -95,20 +94,15 @@ public class ProduitDAO implements I_ProduitDAO {
 
 	@Override
 	public boolean achatProduit(I_Produit p) {		
-		try {
-			pst=cn.prepareStatement("update Produits set quantite=? where nomProduit=?");
-			pst.setString(2,p.getNom());
-			pst.setInt(1,p.getQuantite());
-			pst.executeQuery();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-		return true;
+		return updateProduit(p);
 	}
 
 	@Override
 	public boolean venteProduit(I_Produit p) {
+		return updateProduit(p);
+	}
+
+	private boolean updateProduit(I_Produit p) {
 		try {
 			pst=cn.prepareStatement("update Produits set quantite=? where nomProduit=?");
 			pst.setString(2,p.getNom());
