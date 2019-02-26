@@ -10,7 +10,7 @@ public class Produit implements I_Produit  {
 	private String nom;
 	private double prixUnitaireHT;
 	private double tauxTVA=0.2;
-	private I_ProduitDAO bdd=ProduitDAOFactory.getDAOInstance();
+	private I_ProduitDAO bdd=ProduitDAOFactory.getDAO();
 	
 	public Produit(String name,double prixUHT,int qte) {		
 		this.nom=name;		
@@ -86,7 +86,7 @@ public class Produit implements I_Produit  {
 	
 	@Override
 	public String toString() {
-		return nom+" - prix HT : "+Utilitaire.formatDouble(prixUnitaireHT)+" € - prix TTC : "+Utilitaire.formatDouble(getPrixUnitaireTTC())+" € - quantité en stock : "+quantiteStock;
+		return nom+" - prix HT : "+Utilitaire.formatDouble(prixUnitaireHT)+" â‚¬ - prix TTC : "+Utilitaire.formatDouble(getPrixUnitaireTTC())+" â‚¬ - quantitÃ© en stock : "+quantiteStock;
 	}
 	
 	public Produit CreerProduit(String name,double prixUHT,int qte) {

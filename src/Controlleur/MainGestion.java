@@ -1,16 +1,12 @@
 package Controlleur;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Map.Entry;
 import java.util.Properties;
-
 import BDD.I_ProduitDAO;
 import BDD.ProduitDAOFactory;
 import Modele.Catalogue;
 import Modele.I_Catalogue;
+import Utilitaire.Utilitaire;
 import fenetre.FenetrePrincipale;
-
 
 public class MainGestion {
 	
@@ -21,6 +17,8 @@ public class MainGestion {
 	
 	public static I_Catalogue generateCatalogueBD() {
 		I_Catalogue catalogue = Catalogue.getInstance();
+		I_ProduitDAO dao = ProduitDAOFactory.getDAO();
+		catalogue.addProduits(dao.getAllProduits());
 		return catalogue;
 	}
 
@@ -36,15 +34,7 @@ public class MainGestion {
 	}
 
 	public static Properties LoadFileProperties() {
-		String file="properties.propertie";
-		Properties p=new Properties();
-		 try(InputStream in=new FileInputStream(file)){
-			 p.load(in);
-		 }
-		 catch(IOException e) {
-			 e.printStackTrace();
-		 }
-		 return p;
+		 return Utilitaire.loadProperties("properties.propertie");
 	}
 
 	private static int getQte(String value) {

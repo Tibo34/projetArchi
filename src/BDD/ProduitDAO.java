@@ -9,39 +9,51 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import Modele.I_Produit;
 import Modele.Produit;
+import Utilitaire.Utilitaire;
 
 
 public class ProduitDAO implements I_ProduitDAO {
-
 	private Connection cn;
-	private String url;
-	private String login;
-	private String mdp;
-	private String driver;
 	private Statement st;
 	private PreparedStatement pst;
 	private CallableStatement cst;
 	private ResultSet rs;
 
 	public ProduitDAO() {
-		driver="oracle.jdbc.driver.OracleDriver";
-		url="jbdc:oracle:thin:@162.38.222.149:1521:iut";
-		login="molinat";
-		mdp="123";
+		Properties dbProperties = Utilitaire.loadProperties("bdd.properties");
+
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = dbProperties.getProperty("url");
+		String login = dbProperties.getProperty("login");
+		String mdp = dbProperties.getProperty("mdp");
 		try {
 			Class.forName(driver);
 			cn=DriverManager.getConnection(url, login, mdp);
 			st=cn.createStatement();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
+		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public I_Produit getProduit(String name) {
+        I_Produit p=null;
+	    try {
+            rs=st.executeQuery("select * from Produits where nomproduit=?");
+            pst.setString(1,name);
+            pst.executeQuery();
+
+            if (rs.next()) {
+                p=new Produit(rs.getString(2), rs.getDouble(3),rs.getInt(4));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return p;
 	}
 
 	public List<I_Produit> getAllProduits() {
@@ -50,6 +62,7 @@ public class ProduitDAO implements I_ProduitDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+
 		List<I_Produit> listproduit=new ArrayList<I_Produit>();
 		try {
 			while(rs.next()) {
@@ -59,8 +72,8 @@ public class ProduitDAO implements I_ProduitDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return listproduit;
 
+		return listproduit;
 	}
 
 	@Override
@@ -74,35 +87,12 @@ public class ProduitDAO implements I_ProduitDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
-		}		
-		return true;
-	}
-	
-	@Override
-	public boolean delProduit(I_Produit p) {		
-		try {
-			pst=cn.prepareStatement("delete from Produits where nomProduit=?");
-			pst.setString(1,p.getNom());
-			pst.executeQuery();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;			
 		}
 		return true;
-		
 	}
 
 	@Override
-	public boolean achatProduit(I_Produit p) {		
-		return updateProduit(p);
-	}
-
-	@Override
-	public boolean venteProduit(I_Produit p) {
-		return updateProduit(p);
-	}
-
-	private boolean updateProduit(I_Produit p) {
+	public boolean editProduit(I_Produit p) {
 		try {
 			pst=cn.prepareStatement("update Produits set quantite=? where nomProduit=?");
 			pst.setString(2,p.getNom());
@@ -115,4 +105,26 @@ public class ProduitDAO implements I_ProduitDAO {
 		return true;
 	}
 
+	@Override
+	public boolean delProduit(I_Produit p) {
+		try {
+			pst=cn.prepareStatement("delete from Produits where nomProduit=?");
+			pst.setString(1,p.getNom());
+			pst.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean achatProduit(I_Produit p) {
+		return this.editProduit(p);
+	}
+
+	@Override
+	public boolean venteProduit(I_Produit p) {
+		return this.editProduit(p);
+	}
 }

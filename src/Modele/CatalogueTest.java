@@ -532,7 +532,7 @@ public class CatalogueTest {
 	public void testVendreProduit_stockNul() {
 		cat.addProduit("Mars", 10, 5);
 		cat.addProduit("Treets", 10, 0);
-		cat.addProduit("Raider", 12, 3);
+		cat.addProduit("Raider", 12, 3);		
 		assertFalse("vendre produit sans stock", cat.vendreStock("Treets", 4));
 	}
 	

@@ -1,13 +1,8 @@
 package Modele;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
-
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 import BDD.I_ProduitDAO;
 import BDD.ProduitDAOFactory;
@@ -28,7 +23,7 @@ public class Catalogue implements I_Catalogue {
 
     public static Catalogue getInstance() {
         if (instance == null)
-        	bdd=ProduitDAOFactory.getDAOInstance();
+        	bdd=ProduitDAOFactory.getDAO();
         	List<I_Produit> list=bdd.getAllProduits();
             instance = new Catalogue(bdd.getAllProduits());
         return instance;
@@ -127,7 +122,7 @@ public class Catalogue implements I_Catalogue {
     public boolean vendreStock(String nomProduit, int qteVendue) {       
             I_Produit produit = findProduit(nomProduit);
             if (produit==null||qteVendue <= 0||produit.getQuantite() < qteVendue) {
-                return false;
+            	return false;
             }     
            return  produit.enlever(qteVendue);      
     }
@@ -164,7 +159,7 @@ public class Catalogue implements I_Catalogue {
 			str+=p.toString()+"\n";
 		}
 		str+="\n";
-		str+="Montant total TTC du stock : "+Utilitaire.formatDouble(getMontantTotalTTC())+" €";		
+		str+="Montant total TTC du stock : "+Utilitaire.formatDouble(getMontantTotalTTC())+" â‚¬";		
 		return str;
     }
 }
