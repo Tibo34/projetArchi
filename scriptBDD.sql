@@ -37,5 +37,18 @@ delete from Produits where nomProduit="Smarties";
 delete from Produits where nomProduit="Twix";
 delete from Produits where nomProduit="Treets";
 
+create TABLE Catalogue(
+numCatalogue NUMBER,
+nomCatalogue VARCHAR(20)
+constraint u_catalogue PRIMARY KEY (numCatalogue)
+);
 
 
+ALTER TABLE Produits add numCatalogue NUMBER;
+
+update Produits set numCatalogue=1;
+
+insert table Catalogue values(1,"Snack");
+
+ALTER TABLE Produits 
+ADD FOREIGN KEY (numCatalogue) REFERENCES Catalogue(numCatalogue);

@@ -56,9 +56,11 @@ public class ProduitDAO implements I_ProduitDAO {
         return p;
 	}
 
-	public List<I_Produit> getAllProduits() {
+	public List<I_Produit> getAllProduits(String n) {
 		try {
-			rs=st.executeQuery("select * from Produits order by nomProduit");
+			pst=cn.prepareStatement("select * from Produits where NOMCATALOGUE=? order by nomProduit");
+			pst.setString(1,n);
+			rs=pst.executeQuery();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -127,4 +129,6 @@ public class ProduitDAO implements I_ProduitDAO {
 	public boolean venteProduit(I_Produit p) {
 		return this.editProduit(p);
 	}
+
+	
 }

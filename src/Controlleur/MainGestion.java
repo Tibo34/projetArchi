@@ -1,20 +1,35 @@
 package Controlleur;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Properties;
+
+import BDD.CatalogueDAOFactory;
+import BDD.I_CatalogueDAO;
 import BDD.I_ProduitDAO;
 import BDD.ProduitDAOFactory;
 import Modele.Catalogue;
 import Modele.I_Catalogue;
 import Utilitaire.Utilitaire;
+import fenetre.FenetreAccueil;
 import fenetre.FenetrePrincipale;
 
 public class MainGestion {
 	
 	public static void main(String[]args) {		 
-		 I_Catalogue catalogue = generateCatalogueBD();
-		 FenetrePrincipale fmain=new FenetrePrincipale(catalogue);		
+		 //I_Catalogue catalogue = generateCatalogueBD();		 
+		 FenetreAccueil accueil=new FenetreAccueil();
+		 accueil.addNamesCatalogue(addAllCatalogue(),CatalogueDAOFactory.getDAO());
+		 accueil.setVisible(false);
+		 accueil.setVisible(true);
 	}
 	
+	public static List<String> addAllCatalogue() {
+		I_CatalogueDAO dao=CatalogueDAOFactory.getDAO();
+		return dao.getNamesCatalogue();
+		
+	}
+	/*
 	public static I_Catalogue generateCatalogueBD() {
 		I_Catalogue catalogue = Catalogue.getInstance();
 		I_ProduitDAO dao = ProduitDAOFactory.getDAO();
@@ -43,5 +58,5 @@ public class MainGestion {
 
 	private static double getPrix(String value) {		
 		return Double.parseDouble(value.split(" ")[1].split(":")[1]);
-	}
+	}*/
 }

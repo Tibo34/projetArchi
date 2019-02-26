@@ -14,19 +14,28 @@ public class Catalogue implements I_Catalogue {
 
     private static Catalogue instance = null;
     private static I_ProduitDAO bdd=null;
+    private String nom;
+    private int id;
 
-    private Catalogue() {}
+    public Catalogue(String name) {
+    	nom=name;
+    	instance=this;
+    }
     
     private Catalogue(List<I_Produit> p) {
     	produits.addAll(p);
     }
 
-    public static Catalogue getInstance() {
-        if (instance == null)
-        	bdd=ProduitDAOFactory.getDAO();
-        	List<I_Produit> list=bdd.getAllProduits();
-            instance = new Catalogue(bdd.getAllProduits());
-        return instance;
+    public static I_ProduitDAO getBdd() {
+		return bdd;
+	}
+
+	public static void setBdd(I_ProduitDAO bdd) {
+		Catalogue.bdd = bdd;
+	}
+
+	public static Catalogue getInstance() {
+          return instance;
     }
 
     @Override
@@ -40,7 +49,7 @@ public class Catalogue implements I_Catalogue {
     @Override
     public boolean addProduit(String nom, double prix, int qte) {
     		nom=supprimeEspace(nom);
-          	I_Produit p=createProduit(nom, prix, qte);
+          	I_Produit p=createProduit(nom, prix, qte);          	
           	if(p!=null) {
           		bdd.addNouveauProduit(p);
           		return produits.add(p);
@@ -59,7 +68,7 @@ public class Catalogue implements I_Catalogue {
 
 	private I_Produit createProduit(String nom, double prix, int qte) {
     	if(!nomExist(nom)&&prix>0&&qte>=0) {
-    		return new Produit(nom,prix,qte);
+    		return new Produit(nom,prix,qte,bdd);
     	}
     	return null;
     }
@@ -147,7 +156,23 @@ public class Catalogue implements I_Catalogue {
         return Utilitaire.roundDouble(total);
     }
 
-    @Override
+    public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	@Override
     public void clear() {
         this.produits.clear();
     }
@@ -162,4 +187,9 @@ public class Catalogue implements I_Catalogue {
 		str+="Montant total TTC du stock : "+Utilitaire.formatDouble(getMontantTotalTTC())+" €";		
 		return str;
     }
+
+	@Override
+	public String getName() {
+		return nom;
+	}
 }

@@ -7,7 +7,7 @@ import java.util.List;
 public interface I_ProduitDAO {
     I_Produit getProduit(String name);
 
-    List<I_Produit> getAllProduits();
+    List<I_Produit> getAllProduits(String name);
 
     boolean addNouveauProduit(I_Produit p);
 

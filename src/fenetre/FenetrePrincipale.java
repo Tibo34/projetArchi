@@ -100,8 +100,7 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
 	}
 
 	public void windowClosing(WindowEvent arg0) {
-		System.out.println("Au revoir");
-		System.exit(0);
+		
 	}
 
 	public void windowActivated(WindowEvent arg0) {}

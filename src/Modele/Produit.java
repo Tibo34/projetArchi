@@ -10,12 +10,16 @@ public class Produit implements I_Produit  {
 	private String nom;
 	private double prixUnitaireHT;
 	private double tauxTVA=0.2;
-	private I_ProduitDAO bdd=ProduitDAOFactory.getDAO();
+	private I_ProduitDAO bdd;
 	
 	public Produit(String name,double prixUHT,int qte) {		
 		this.nom=name;		
 		this.prixUnitaireHT=prixUHT;
 		this.quantiteStock=qte;		
+	}
+	public Produit(String n, double p,int q, I_ProduitDAO b) {
+		this(n,p,q);
+		bdd=b;
 	}
 	
 	
@@ -89,9 +93,19 @@ public class Produit implements I_Produit  {
 		return nom+" - prix HT : "+Utilitaire.formatDouble(prixUnitaireHT)+" € - prix TTC : "+Utilitaire.formatDouble(getPrixUnitaireTTC())+" € - quantité en stock : "+quantiteStock;
 	}
 	
-	public Produit CreerProduit(String name,double prixUHT,int qte) {
-		Produit p=new Produit(name,prixUHT,qte);
+	public Produit CreerProduit(String name,double prixUHT,int qte,I_ProduitDAO bdd) {
+		Produit p=new Produit(name,prixUHT,qte,bdd);
 		return p;
+	}
+
+
+	public I_ProduitDAO getBdd() {
+		return bdd;
+	}
+
+
+	public void setBdd(I_ProduitDAO bdd) {
+		this.bdd = bdd;
 	}
 
 }
