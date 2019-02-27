@@ -12,32 +12,32 @@ import Utilitaire.Utilitaire;
 
 public class Catalogue implements I_Catalogue {
 	
-    private ArrayList<I_Produit> produits = new ArrayList<>();
+    private List<I_Produit> produits = new ArrayList<>();
 
     private static Catalogue instance = null;
-    private static I_ProduitDAO produitDAO=ProduitDAOFactory.getDAOOracle();
-    private static I_CatalogueDAO daoCatalogue=CatalogueDAOFactory.getDAO();
+    private I_ProduitDAO produitDAO;
+    private I_CatalogueDAO daoCatalogue;
     private String nom;
     private int id;
 
     public Catalogue(String name) {
+    	this(name,ProduitDAOFactory.getDAOOracle(),CatalogueDAOFactory.getDAOOracle());
+    }
+    
+    public Catalogue(String name ,I_ProduitDAO dp, I_CatalogueDAO dc) {
     	nom=name;
     	instance=this;
+    	produitDAO=dp;
+    	daoCatalogue=dc;
     	id=daoCatalogue.getId(name);
+    	produits=produitDAO.getAllProduits(name);    	
     }
    
     
     private Catalogue(List<I_Produit> p) {
     	produits.addAll(p);
     }
-
-    public static I_ProduitDAO getBdd() {
-		return produitDAO;
-	}
-
-	public static void setBdd(I_ProduitDAO bdd) {
-		Catalogue.produitDAO = bdd;
-	}
+    
 
 	public static Catalogue getInstance() {
           return instance;
@@ -61,8 +61,7 @@ public class Catalogue implements I_Catalogue {
           	}
           	else {
           		return false;
-          	}
-          	
+          	}         	
           	 
     }
     
@@ -210,6 +209,26 @@ public class Catalogue implements I_Catalogue {
 	@Override
 	public int getNumCatalogue() {
 		return id;
+	}
+
+
+	public I_ProduitDAO getProduitDAO() {
+		return produitDAO;
+	}
+
+
+	public void setProduitDAO(I_ProduitDAO dp) {
+		produitDAO = dp;
+	}
+
+
+	public I_CatalogueDAO getDaoCatalogue() {
+		return daoCatalogue;
+	}
+
+
+	public void setDaoCatalogue(I_CatalogueDAO dc) {
+		daoCatalogue = dc;
 	}
 
 	

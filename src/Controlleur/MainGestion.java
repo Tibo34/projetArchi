@@ -24,7 +24,7 @@ public class MainGestion {
 	}
 	
 	public static List<String> addAllCatalogue() {
-		I_CatalogueDAO dao=CatalogueDAOFactory.getDAO();
+		I_CatalogueDAO dao=CatalogueDAOFactory.getDAOOracle();
 		return dao.getNamesCatalogue();		
 	}
 	

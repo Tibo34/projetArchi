@@ -13,12 +13,10 @@ public class DAOConnection {
 	
 	private DAOConnection() {
 		Properties dbProperties = Utilitaire.loadProperties("bdd.propertie");
-		
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = dbProperties.getProperty("url");
 		String login = dbProperties.getProperty("username");
 		String mdp = dbProperties.getProperty("password");
-		System.out.println(login+" "+mdp);
 		try {
 			Class.forName(driver);
 			cn=DriverManager.getConnection(url, login, mdp);			

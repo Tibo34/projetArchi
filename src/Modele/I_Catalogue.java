@@ -1,7 +1,8 @@
 package Modele;
 import java.util.List;
 
-import BDD.I_CatalogueDAO; 
+import BDD.I_CatalogueDAO;
+import BDD.I_ProduitDAO; 
 
 public interface I_Catalogue {
 
@@ -18,6 +19,8 @@ public interface I_Catalogue {
 	public abstract String getName();
 	public abstract int getNbProduits();
 	public abstract int getNumCatalogue();
+	public abstract I_ProduitDAO getProduitDAO();
+	public abstract void setProduitDAO(I_ProduitDAO p);
 	
 	
 

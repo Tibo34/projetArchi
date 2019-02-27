@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Properties;
 
 import Utilitaire.Utilitaire;
+import sun.security.jca.GetInstance;
 
 public class CatalogueDAO implements I_CatalogueDAO {
 	
@@ -23,13 +24,20 @@ public class CatalogueDAO implements I_CatalogueDAO {
 	
 	public CatalogueDAO() {
 		cn=DAOConnection.getDAOConnection();
+		try {
+			st=cn.createStatement();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
+	
 
 	@Override
 	public List<String> getNamesCatalogue() {
 		List<String> names=new ArrayList<>();
 		try {
-			rs=st.executeQuery("select nomCatalogue from Catalogue");
+			rs=st.executeQuery("select nomCatalogue from Catalogues");
+			
 			if(rs.getRow()==0) {
 				return null;
 			}
@@ -47,7 +55,7 @@ public class CatalogueDAO implements I_CatalogueDAO {
 	public List<String> getIdCatalogue() {
 		List<String> ids=new ArrayList<>();
 		try {
-			rs=st.executeQuery("select numCatalogue from Catalogue");
+			rs=st.executeQuery("select numCatalogue from Catalogues");
 			if(rs.getRow()==0) {
 				return null;
 			}
@@ -63,7 +71,7 @@ public class CatalogueDAO implements I_CatalogueDAO {
 	
 	public int getId(String n) {
 		try {
-			rs=st.executeQuery("select numCatalogue,nomCatalogue from Catalogue");
+			rs=st.executeQuery("select numCatalogue,nomCatalogue from Catalogues");
 			if(rs.getRow()==0) {
 				return -1;
 			}
@@ -84,25 +92,25 @@ public class CatalogueDAO implements I_CatalogueDAO {
 	@Override
 	public int getNombreProduitCatalogue(String name) {
 		try {
-			pst=cn.prepareStatement("select count() from Catalogue natural join Produits where NOMCATALOGUE=?");
+			pst=cn.prepareStatement("select count() from Catalogues natural join Produits where nomCatalogue=?");
 			pst.setString(1,name);
 			rs=pst.executeQuery();
 			int nb=0;
 			while (rs.next()){
 				nb=rs.getInt(1);				
-			}
+			}			
 			return nb;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		return 0;	}
+		return 0;	
+	}
 
 	@Override
 	public boolean exist(String name) {		
 		try {
-			pst=cn.prepareStatement("select * from Catalogue where nomCatalogue=?");
+			pst=cn.prepareStatement("select * from Catalogues where nomCatalogue=?");
 			pst.setString(1,name);
 			rs=pst.executeQuery();
 			int nb=rs.getRow();
@@ -110,7 +118,6 @@ public class CatalogueDAO implements I_CatalogueDAO {
 				return true;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return false;
@@ -123,7 +130,6 @@ public class CatalogueDAO implements I_CatalogueDAO {
 			cst.setString(1,n);
 			rs=cst.executeQuery();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
 	}

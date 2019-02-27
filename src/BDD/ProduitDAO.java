@@ -1,6 +1,5 @@
 package BDD;
 
-import java.sql.DriverManager;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,12 +8,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 import Modele.I_Catalogue;
 import Modele.I_Produit;
 import Modele.Produit;
-import Utilitaire.Utilitaire;
 
 
 public class ProduitDAO implements I_ProduitDAO {
@@ -47,7 +44,7 @@ public class ProduitDAO implements I_ProduitDAO {
 
 	public List<I_Produit> getAllProduits(String n) {
 		try {
-			pst=cn.prepareStatement("select * from Produits natural join Catalogue where nomcatalogue=? order by nomProduit");
+			pst=cn.prepareStatement("select * from Produits natural join Catalogues where nomcatalogue=? order by nomProduit");
 			pst.setString(1,n);
 			rs=pst.executeQuery();
 		} catch (SQLException e) {
@@ -63,7 +60,7 @@ public class ProduitDAO implements I_ProduitDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
+		System.out.println(listproduit);
 		return listproduit;
 	}
 

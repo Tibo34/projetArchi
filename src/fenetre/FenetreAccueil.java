@@ -96,10 +96,6 @@ public class FenetreAccueil extends JFrame implements ActionListener,WindowListe
 		btSupprimer.addActionListener(this);
 		btSelectionner.addActionListener(this);
 		
-		//String[] tab  = {"Formacia" , "Le Redoutable", "Noitaicossa"}; 
-		//modifierListesCatalogues(tab);
-		//String[] tab2 = {"Formacia : 6 produits" , "Le Redoutable : 4 produits" , "Noitaicossa : 0 produits" };
-		//modifierDetailCatalogues(tab2);
 		modifierNbCatalogues();
 		setVisible(true);
 	}
@@ -171,26 +167,23 @@ public class FenetreAccueil extends JFrame implements ActionListener,WindowListe
 
 	private void importCatalogue() {
 		String name=txtAjouter.getText();
-		txtAjouter.setText(null);
-		I_ProduitDAO daoProduit=ProduitDAOFactory.getDAOOracle();
+		txtAjouter.setText(null);		
 		if(!catalogueExist(name)) {
 			createNewCatalogue(name);
 		}
 		I_Catalogue catalogue=CatalogueFactory.createCatalogue(name);				
-		List<I_Produit> produits=daoProduit.getAllProduits(name);
-		catalogue.addProduits(produits);
 		addCatalogue(catalogue);				
 		repaint();
 	}
 	
 	private void createNewCatalogue(String name) {
-		I_CatalogueDAO dao=CatalogueDAOFactory.getDAO();
+		I_CatalogueDAO dao=CatalogueDAOFactory.getDAOOracle();
 		dao.addCatalogue("name");
 		
 	}
 
 	private boolean catalogueExist(String name) {
-		I_CatalogueDAO dao=CatalogueDAOFactory.getDAO();
+		I_CatalogueDAO dao=CatalogueDAOFactory.getDAOOracle();
 		return dao.exist(name);
 	}
 
