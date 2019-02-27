@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import BDD.CatalogueDAOFactory;
+import BDD.I_CatalogueDAO;
 import BDD.I_ProduitDAO;
 import BDD.ProduitDAOFactory;
 import Utilitaire.Utilitaire;
@@ -13,25 +15,28 @@ public class Catalogue implements I_Catalogue {
     private ArrayList<I_Produit> produits = new ArrayList<>();
 
     private static Catalogue instance = null;
-    private static I_ProduitDAO bdd=null;
+    private static I_ProduitDAO produitDAO=ProduitDAOFactory.getDAOOracle();
+    private static I_CatalogueDAO daoCatalogue=CatalogueDAOFactory.getDAO();
     private String nom;
     private int id;
 
     public Catalogue(String name) {
     	nom=name;
     	instance=this;
+    	id=daoCatalogue.getId(name);
     }
+   
     
     private Catalogue(List<I_Produit> p) {
     	produits.addAll(p);
     }
 
     public static I_ProduitDAO getBdd() {
-		return bdd;
+		return produitDAO;
 	}
 
 	public static void setBdd(I_ProduitDAO bdd) {
-		Catalogue.bdd = bdd;
+		Catalogue.produitDAO = bdd;
 	}
 
 	public static Catalogue getInstance() {
@@ -50,8 +55,8 @@ public class Catalogue implements I_Catalogue {
     public boolean addProduit(String nom, double prix, int qte) {
     		nom=supprimeEspace(nom);
           	I_Produit p=createProduit(nom, prix, qte);          	
-          	if(p!=null) {
-          		bdd.addNouveauProduit(p);
+          	if(p!=null&&!produits.contains(p)) {
+          		produitDAO.addNouveauProduit(p,this);
           		return produits.add(p);
           	}
           	else {
@@ -68,7 +73,7 @@ public class Catalogue implements I_Catalogue {
 
 	private I_Produit createProduit(String nom, double prix, int qte) {
     	if(!nomExist(nom)&&prix>0&&qte>=0) {
-    		return new Produit(nom,prix,qte,bdd);
+    		return new Produit(nom,prix,qte,produitDAO);
     	}
     	return null;
     }
@@ -79,7 +84,7 @@ public class Catalogue implements I_Catalogue {
     		return 0;
     	}
     	int i=0;
-    	for(I_Produit p :listProduitAdd) {
+    	for(I_Produit p :listProduitAdd) {    		
     		if(addProduit(p)) {
     			i++;
     		}    		
@@ -104,7 +109,7 @@ public class Catalogue implements I_Catalogue {
     		return false;
     	}
     	else {
-    		bdd.delProduit(p);
+    		produitDAO.delProduit(p,this);
     	}
          return  produits.remove(p);     
     }
@@ -123,8 +128,10 @@ public class Catalogue implements I_Catalogue {
             I_Produit produit = findProduit(nomProduit);
             if (produit==null||qteAchetee <= 0) {
                 return false;
-            }           
-            return  produit.ajouter(qteAchetee);      
+            }
+            boolean r=produit.ajouter(qteAchetee);
+            r=produitDAO.achatProduit(produit,this);
+            return r;      
     }
 
     @Override
@@ -132,8 +139,10 @@ public class Catalogue implements I_Catalogue {
             I_Produit produit = findProduit(nomProduit);
             if (produit==null||qteVendue <= 0||produit.getQuantite() < qteVendue) {
             	return false;
-            }     
-           return  produit.enlever(qteVendue);      
+            }
+            boolean r=produit.enlever(qteVendue);
+            r=produitDAO.venteProduit(produit, this);
+           return  r;      
     }
 
     @Override
@@ -192,4 +201,16 @@ public class Catalogue implements I_Catalogue {
 	public String getName() {
 		return nom;
 	}
+
+	@Override
+	public int getNbProduits() {
+		return produits.size();
+	}
+
+	@Override
+	public int getNumCatalogue() {
+		return id;
+	}
+
+	
 }

@@ -22,26 +22,14 @@ public class CatalogueDAO implements I_CatalogueDAO {
 	private ResultSet rs;
 	
 	public CatalogueDAO() {
-		Properties dbProperties = Utilitaire.loadProperties("bdd.properties");
-
-		String driver = "oracle.jdbc.driver.OracleDriver";
-		String url = dbProperties.getProperty("url");
-		String login = dbProperties.getProperty("login");
-		String mdp = dbProperties.getProperty("mdp");
-		try {
-			Class.forName(driver);
-			cn=DriverManager.getConnection(url, login, mdp);
-			st=cn.createStatement();
-		} catch (SQLException | ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+		cn=DAOConnection.getDAOConnection();
 	}
 
 	@Override
 	public List<String> getNamesCatalogue() {
 		List<String> names=new ArrayList<>();
 		try {
-			rs=st.executeQuery("select NOMCATALOGUE from Catalogue");
+			rs=st.executeQuery("select nomCatalogue from Catalogue");
 			if(rs.getRow()==0) {
 				return null;
 			}
@@ -72,6 +60,26 @@ public class CatalogueDAO implements I_CatalogueDAO {
 		}
 		return ids;
 	}
+	
+	public int getId(String n) {
+		try {
+			rs=st.executeQuery("select numCatalogue,nomCatalogue from Catalogue");
+			if(rs.getRow()==0) {
+				return -1;
+			}
+			while(rs.next()) {
+				int id=rs.getInt(1);
+				String name=rs.getString(2);
+				if(name.equals(n)) {
+					return id;
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return -1;
+		}
+		return -1;
+	}
 
 	@Override
 	public int getNombreProduitCatalogue(String name) {
@@ -89,7 +97,35 @@ public class CatalogueDAO implements I_CatalogueDAO {
 			e.printStackTrace();
 		}
 		
-		return 0;
+		return 0;	}
+
+	@Override
+	public boolean exist(String name) {		
+		try {
+			pst=cn.prepareStatement("select * from Catalogue where nomCatalogue=?");
+			pst.setString(1,name);
+			rs=pst.executeQuery();
+			int nb=rs.getRow();
+			if(nb>=0) {
+				return true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public void addCatalogue(String n) {
+		try {
+			cst=cn.prepareCall("call addCatalogue(?)");
+			cst.setString(1,n);
+			rs=cst.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
 	}
 
 }

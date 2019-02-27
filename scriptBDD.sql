@@ -6,6 +6,13 @@ drop sequence seqNumProduit;
 create sequence seqNumProduit
 start with 1;
 
+drop sequence seqCatalogue;
+
+create sequence seqCatalogue
+start with 2;
+
+delete from Catalogue where numCatalogue=2;
+
 CREATE TABLE Produits
 (numProduit NUMBER, nomProduit VARCHAR(20) not null, prixHT NUMBER, quantite INTEGER,
 CONSTRAINT pk_numProduit PRIMARY KEY (numProduit),
@@ -13,9 +20,15 @@ constraint u_nomProduit UNIQUE (nomProduit));
 
 
 
-create or replace procedure addProduit(p_nom Produits.nomProduit%TYPE,p_prix Produits.prixHT%TYPE,p_quantite Produits.quantite%TYPE)is
+
+create or replace procedure addProduit(p_nom Produits.nomProduit%TYPE,p_prix Produits.prixHT%TYPE,p_quantite Produits.quantite%TYPE,p_Catalogue numCatalogue.nomCatalogue%TYPE)is
 BEGIN
-INSERT INTO Produits (numProduit, nomProduit, prixHT, quantite) VALUES (seqNumProduit.nextval,p_nom,p_prix,p_quantite);
+INSERT INTO Produits (numProduit, nomProduit, prixHT, quantite,numCatalogue) VALUES (seqNumProduit.nextval,p_nom,p_prix,p_quantite,p_Catalogue);
+end;
+
+create or replace procedure addCatalogue(p_nom Catalogue.nomCatalogue%TYPE)is
+begin
+insert into Catalogue(numCatalogue,nomCatalogue)values(seqCatalogue.nextval,p_nom);
 end;
 
 

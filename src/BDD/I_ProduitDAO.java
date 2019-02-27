@@ -1,5 +1,6 @@
 package BDD;
 
+import Modele.I_Catalogue;
 import Modele.I_Produit;
 
 import java.util.List;
@@ -9,13 +10,13 @@ public interface I_ProduitDAO {
 
     List<I_Produit> getAllProduits(String name);
 
-    boolean addNouveauProduit(I_Produit p);
+    boolean addNouveauProduit(I_Produit p,I_Catalogue c);
 
-    boolean editProduit(I_Produit p);
+    boolean editProduit(I_Produit p,I_Catalogue c);
 
-    boolean achatProduit(I_Produit p);
+    boolean achatProduit(I_Produit p,I_Catalogue c);
 
-    boolean venteProduit(I_Produit p);
+    boolean venteProduit(I_Produit p,I_Catalogue c);
 
-    boolean delProduit(I_Produit p);
+    boolean delProduit(I_Produit p,I_Catalogue c);
 }

@@ -19,16 +19,15 @@ public class MainGestion {
 	public static void main(String[]args) {		 
 		 //I_Catalogue catalogue = generateCatalogueBD();		 
 		 FenetreAccueil accueil=new FenetreAccueil();
-		 accueil.addNamesCatalogue(addAllCatalogue(),CatalogueDAOFactory.getDAO());
-		 accueil.setVisible(false);
-		 accueil.setVisible(true);
+		 
+
 	}
 	
 	public static List<String> addAllCatalogue() {
 		I_CatalogueDAO dao=CatalogueDAOFactory.getDAO();
-		return dao.getNamesCatalogue();
-		
+		return dao.getNamesCatalogue();		
 	}
+	
 	/*
 	public static I_Catalogue generateCatalogueBD() {
 		I_Catalogue catalogue = Catalogue.getInstance();

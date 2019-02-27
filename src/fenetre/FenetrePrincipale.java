@@ -5,6 +5,7 @@ import javax.swing.*;
 
 import Controlleur.ControllerAchatVente;
 import Controlleur.ControllerCreerSupprimer;
+import Controlleur.ControllerGestionCatalogue;
 import Controlleur.ControllerStock;
 import Modele.I_Catalogue;
 
@@ -22,11 +23,13 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
 	private JButton btVente;
 	private JButton btQuitter;
 	private I_Catalogue catalogue;
+	private FenetreAccueil accueil;
 
 	
-	public FenetrePrincipale(I_Catalogue c) {
+	public FenetrePrincipale(I_Catalogue c, FenetreAccueil f) {
 		catalogue=c;
 		setTitle("exercice Produits");
+		accueil=f;
 		setBounds(500, 500, 320, 250);
 		JPanel panAffichage = new JPanel();
 		JPanel panNouveauSupprimerProduit = new JPanel();
@@ -71,6 +74,14 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
 		setVisible(true);
 	}
 
+	public FenetreAccueil getAccueil() {
+		return accueil;
+	}
+
+	public void setAccueil(FenetreAccueil accueil) {
+		this.accueil = accueil;
+	}
+
 	public void actionPerformed(ActionEvent e) {
 
 /* tabProduits permet de tester le fonctionnement des fenêtres avec un tableau de noms de produits "en dur"
@@ -94,8 +105,8 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
 		if (e.getSource() == btVente)
 			ControllerAchatVente.AfficheVente(this,catalogue);
 		if (e.getSource() == btQuitter){
-			System.out.println("Au revoir");
-			System.exit(0);
+			ControllerGestionCatalogue.closeframeCatalogue(accueil);
+			this.dispose();
 		}	
 	}
 

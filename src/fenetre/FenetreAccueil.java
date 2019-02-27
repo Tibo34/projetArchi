@@ -3,10 +3,13 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import BDD.CatalogueDAO;
+import BDD.CatalogueDAOFactory;
 import BDD.I_CatalogueDAO;
 import BDD.I_ProduitDAO;
 import BDD.ProduitDAO;
 import BDD.ProduitDAOFactory;
+import Controlleur.ControllerGestionCatalogue;
 
 import java.util.*;
 import java.util.List;
@@ -45,7 +48,7 @@ public class FenetreAccueil extends JFrame implements ActionListener,WindowListe
 		panSupprimer.setBackground(Color.lightGray);
 		panSelectionner.setBackground(Color.gray);
 		
-		
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		panNbCatalogues.add(new JLabel("Nous avons actuellement : "));
 		lbNbCatalogues = new JLabel();
 		panNbCatalogues.add(lbNbCatalogues);
@@ -104,8 +107,17 @@ public class FenetreAccueil extends JFrame implements ActionListener,WindowListe
 	public void addCatalogue(I_Catalogue n) {
 		listeCatalogue.add(n);
 		catalogueName.add(n.getName());
+		detailCatalogue.add(n.getName()+" : "+n.getNbProduits());
 		modifierDetailCatalogues(detailCatalogue);
 		modifierListesCatalogues(catalogueName);
+		modifierNbCatalogues();
+		repaint();
+	}
+	
+	public void addCatalogues(List<I_Catalogue> list) {
+		for (I_Catalogue c : list) {
+			addCatalogue(c);
+		}
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -114,32 +126,74 @@ public class FenetreAccueil extends JFrame implements ActionListener,WindowListe
 			String texteAjout = txtAjouter.getText();
 			if (!texteAjout.equals(""))
 			{
-				System.out.println("ajouter le catalogue "+texteAjout);
-				String name=txtAjouter.getText();
-				txtAjouter.setText(null);
-				I_Catalogue catalogue=CatalogueFactory.createCatalogue(name);
-				addCatalogue(catalogue);
-				repaint();
-				
+				importCatalogue();				
 			}
 		}
 		if (e.getSource() == btSupprimer)
 		{
 			String texteSupprime = (String)cmbSupprimer.getSelectedItem();
-			if (texteSupprime != null)
+			if (texteSupprime != null) {
+				I_Catalogue c=getCatalogue(texteSupprime);
+				deleteCatalogue(c);
+			}
 				System.out.println("supprime catalogue "+texteSupprime);
 		}
 		if (e.getSource() == btSelectionner)
 		{
 			String texteSelection = (String)cmbSupprimer.getSelectedItem();
+			System.out.println("Catalogue sélectionné : "+texteSelection);
 			if (texteSelection != null) 
 			{
-				System.out.println("selectionne catalogue "+texteSelection);
+				I_Catalogue c=getCatalogue(texteSelection);
+				ControllerGestionCatalogue.displayCatalogue(c,this);
 				this.dispose();
 			}
 		}	
 	}
+
+	private void deleteCatalogue(I_Catalogue c) {
+		listeCatalogue.remove(c);
+		catalogueName.remove(c.getName());
+		modifierDetailCatalogues(detailCatalogue);
+		modifierListesCatalogues(catalogueName);
+		modifierNbCatalogues();
+		repaint();
+	}
+
+	private I_Catalogue getCatalogue(String texteSelection) {
+		for (I_Catalogue c : listeCatalogue) {
+			if(c.getName().equals(texteSelection)) {
+				return c;
+			}
+		}
+		return null;
+	}
+
+	private void importCatalogue() {
+		String name=txtAjouter.getText();
+		txtAjouter.setText(null);
+		I_ProduitDAO daoProduit=ProduitDAOFactory.getDAOOracle();
+		if(!catalogueExist(name)) {
+			createNewCatalogue(name);
+		}
+		I_Catalogue catalogue=CatalogueFactory.createCatalogue(name);				
+		List<I_Produit> produits=daoProduit.getAllProduits(name);
+		catalogue.addProduits(produits);
+		addCatalogue(catalogue);				
+		repaint();
+	}
 	
+	private void createNewCatalogue(String name) {
+		I_CatalogueDAO dao=CatalogueDAOFactory.getDAO();
+		dao.addCatalogue("name");
+		
+	}
+
+	private boolean catalogueExist(String name) {
+		I_CatalogueDAO dao=CatalogueDAOFactory.getDAO();
+		return dao.exist(name);
+	}
+
 	private void modifierListesCatalogues(List<String> noms) {
 		String[]names=new String[noms.size()];
 		noms.toArray(names);
@@ -185,6 +239,7 @@ public class FenetreAccueil extends JFrame implements ActionListener,WindowListe
 	public void addNamesCatalogue(List<String> c, I_CatalogueDAO d) {
 		catalogueName.addAll(c);		
 		daoCatalogue=d;
+		
 		modifierListesCatalogues(catalogueName);
 		for (String str : catalogueName) {
 			I_Catalogue catalogue=CatalogueFactory.createCatalogue(str);
@@ -205,6 +260,14 @@ public class FenetreAccueil extends JFrame implements ActionListener,WindowListe
 
 	public I_CatalogueDAO getDaoCatalogue() {
 		return daoCatalogue;
+	}
+
+	public List<I_Catalogue> getListeCatalogue() {
+		return listeCatalogue;
+	}
+
+	public void setListeCatalogue(List<I_Catalogue> listeCatalogue) {
+		this.listeCatalogue = listeCatalogue;
 	}
 
 	public void setDaoCatalogue(I_CatalogueDAO daoCatalogue) {

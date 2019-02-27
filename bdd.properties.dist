@@ -1,3 +1,5 @@
-url=null
-username=null
-password=null
+#Base de donnée
+#Sun Feb 10 21:38:12 CET 2019
+url=http://orainfo.iutmontp.univ-montp2.fr:5560/isqlplus/
+username=molinat
+password=123

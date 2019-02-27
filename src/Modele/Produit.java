@@ -1,7 +1,6 @@
 package Modele;
 
 import BDD.I_ProduitDAO;
-import BDD.ProduitDAOFactory;
 import Utilitaire.Utilitaire;
 
 public class Produit implements I_Produit  {
@@ -22,6 +21,19 @@ public class Produit implements I_Produit  {
 		bdd=b;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Produit) {
+			Produit p=(Produit) obj;
+			if(nom.equals(p.getNom())) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		return false;
+	}
 	
 	@Override
 	public boolean ajouter(int qteAchetee) {		
@@ -30,7 +42,6 @@ public class Produit implements I_Produit  {
 		}
 		else {
 			quantiteStock+=qteAchetee;
-			bdd.achatProduit(this);
 			return true;
 		}
 	}
@@ -42,7 +53,6 @@ public class Produit implements I_Produit  {
 		}
 		else {
 			quantiteStock-=qteVendue;
-			bdd.venteProduit(this);
 			return true;
 		}
 		
