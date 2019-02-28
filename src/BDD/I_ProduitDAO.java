@@ -1,5 +1,6 @@
 package BDD;
 
+import Modele.Categorie;
 import Modele.I_Catalogue;
 import Modele.I_Produit;
 
@@ -19,4 +20,6 @@ public interface I_ProduitDAO {
     public abstract boolean venteProduit(I_Produit p,I_Catalogue c);
 
     public abstract boolean delProduit(I_Produit p,I_Catalogue c);
+    
+    
 }

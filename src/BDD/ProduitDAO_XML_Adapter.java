@@ -13,12 +13,7 @@ public class ProduitDAO_XML_Adapter implements I_ProduitDAO {
     public ProduitDAO_XML_Adapter() {
         dao = new ProduitDAO_XML();
         setUri(dao.getUri());
-    }
-
-    public ProduitDAO_XML_Adapter(String absolutePath) {
-		dao=new ProduitDAO_XML(absolutePath);
-		setUri(absolutePath);
-	}
+    }  
 
 	@Override
     public boolean addNouveauProduit(I_Produit p,I_Catalogue c) {

@@ -2,14 +2,15 @@ package Controlleur;
 
 import java.util.List;
 
+import BDD.I_CategorieDAO;
 import Modele.I_Catalogue;
 import fenetre.FenetreAccueil;
 import fenetre.FenetrePrincipale;
 
 public class ControllerGestionCatalogue {
 	
-	public static void displayCatalogue(I_Catalogue c,FenetreAccueil f) {
-		FenetrePrincipale principal=new FenetrePrincipale(c,f);
+	public static void displayCatalogue(I_Catalogue c,FenetreAccueil f,List<String> categorie,I_CategorieDAO dao) {
+		FenetrePrincipale principal=new FenetrePrincipale(c,f,categorie,dao);
 	}
 	
 	

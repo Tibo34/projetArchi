@@ -9,7 +9,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import Modele.CategorieFactory;
 import Modele.I_Catalogue;
+import Modele.I_Categorie;
 import Modele.I_Produit;
 import Modele.Produit;
 
@@ -28,13 +30,13 @@ public class ProduitDAO implements I_ProduitDAO {
 	public I_Produit getProduit(String name,I_Catalogue n) {
         I_Produit p=null;
 	    try {
-            pst=cn.prepareStatement("select * from Produits natural join Catalogues where nomproduit=? and nomCatalogue=?");
+            pst=cn.prepareStatement("select * from Produits natural join Catalogues natural join Categories where nomproduit=? and nomCatalogue=?");
             pst.setString(1,name);
             pst.setString(2,n.getName());
-            pst.executeQuery();
-
-            if (rs.next()) {
-                p=new Produit(rs.getString(2), rs.getDouble(3),rs.getInt(4));
+            pst.executeQuery();           
+            if (rs.next()) {       
+            	I_Categorie c=CategorieFactory.createCategorie(rs.getInt(1),rs.getString(8),rs.getString(9));
+                p=new Produit(rs.getString(4), rs.getDouble(5),rs.getInt(6),c);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -44,7 +46,7 @@ public class ProduitDAO implements I_ProduitDAO {
 
 	public List<I_Produit> getAllProduits(String n) {
 		try {
-			pst=cn.prepareStatement("select * from Produits natural join Catalogues where nomcatalogue=? order by nomProduit");
+			pst=cn.prepareStatement("select * from Produits natural join Catalogues natural join Categories where nomcatalogue=? order by nomProduit");
 			pst.setString(1,n);
 			rs=pst.executeQuery();
 		} catch (SQLException e) {
@@ -52,9 +54,11 @@ public class ProduitDAO implements I_ProduitDAO {
 		}
 
 		List<I_Produit> listproduit=new ArrayList<I_Produit>();
+		I_Produit p=null;
 		try {
 			while(rs.next()) {
-				I_Produit p=new Produit(rs.getString(3), rs.getDouble(4),rs.getInt(5),this);
+				I_Categorie c=CategorieFactory.createCategorie(rs.getInt(1),rs.getString(8),rs.getString(9));
+                p=new Produit(rs.getString(4), rs.getDouble(5),rs.getInt(6),c);
 				listproduit.add(p);
 			}
 		} catch (SQLException e) {

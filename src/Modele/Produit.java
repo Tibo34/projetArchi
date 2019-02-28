@@ -1,5 +1,6 @@
 package Modele;
 
+import BDD.I_CategorieDAO;
 import BDD.I_ProduitDAO;
 import Utilitaire.Utilitaire;
 
@@ -7,19 +8,17 @@ public class Produit implements I_Produit  {
 	
 	private int quantiteStock;
 	private String nom;
-	private double prixUnitaireHT;
-	private double tauxTVA=0.2;
-	private I_ProduitDAO bdd;
+	private double prixUnitaireHT;	
+	private I_Categorie categorie;
 	
-	public Produit(String name,double prixUHT,int qte) {		
+	public Produit(String name,double prixUHT,int qte,I_Categorie c) {		
 		this.nom=name;		
 		this.prixUnitaireHT=prixUHT;
 		this.quantiteStock=qte;		
+		categorie=c;
 	}
-	public Produit(String n, double p,int q, I_ProduitDAO b) {
-		this(n,p,q);
-		bdd=b;
-	}
+	
+	
 	
 	@Override
 	public boolean equals(Object obj) {
@@ -88,7 +87,7 @@ public class Produit implements I_Produit  {
 
 	@Override
 	public double getPrixUnitaireTTC() {
-		return prixUnitaireHT*(1+tauxTVA);
+		return prixUnitaireHT*(1+categorie.getTauxTVA());
 	}
 	
 	
@@ -103,19 +102,20 @@ public class Produit implements I_Produit  {
 		return nom+" - prix HT : "+Utilitaire.formatDouble(prixUnitaireHT)+" € - prix TTC : "+Utilitaire.formatDouble(getPrixUnitaireTTC())+" € - quantité en stock : "+quantiteStock;
 	}
 	
-	public Produit CreerProduit(String name,double prixUHT,int qte,I_ProduitDAO bdd) {
-		Produit p=new Produit(name,prixUHT,qte,bdd);
+	public Produit CreerProduit(String name,double prixUHT,int qte,I_Categorie c) {
+		Produit p=new Produit(name,prixUHT,qte,c);
 		return p;
 	}
-
-
-	public I_ProduitDAO getBdd() {
-		return bdd;
+	
+	@Override
+	public void setCategorie(I_Categorie c) {
+		categorie=c;
+		
 	}
-
-
-	public void setBdd(I_ProduitDAO bdd) {
-		this.bdd = bdd;
+	@Override
+	public I_Categorie getCategorie() {
+		return categorie;
+		
 	}
 
 }

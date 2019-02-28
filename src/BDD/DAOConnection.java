@@ -23,6 +23,7 @@ public class DAOConnection {
 		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+		CategorieDAOFactory.getDAOOracle();
 	}
 	
 	public static Connection getDAOConnection() {
@@ -36,7 +37,6 @@ public class DAOConnection {
 		try {
 			cn.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

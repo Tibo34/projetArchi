@@ -19,7 +19,6 @@ import sun.security.jca.GetInstance;
 public class CatalogueDAO implements I_CatalogueDAO {
 	
 	private Connection cn;
-	private Statement st;
 	private PreparedStatement pst;
 	private CallableStatement cst;
 	private ResultSet rs;
@@ -34,16 +33,13 @@ public class CatalogueDAO implements I_CatalogueDAO {
 		List<String> names=new ArrayList<>();
 		try {
 			pst=cn.prepareStatement("select nomCatalogue from Catalogues");
-			rs=pst.executeQuery();
-			if(rs.getRow()==0) {
-				return null;
-			}
+			rs=pst.executeQuery();			
 			while(rs.next()) {
 				names.add(rs.getString(1));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return null;
+			return names;
 		}
 		return names;
 	}
@@ -131,15 +127,31 @@ public class CatalogueDAO implements I_CatalogueDAO {
 	}
 
 	@Override
-	public void addCatalogue(String n) {
+	public boolean addCatalogue(String n) {
 		try {
 			cst=cn.prepareCall("call addCatalogue(?)");
 			cst.setString(1,n);
 			rs=cst.executeQuery();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
+		return true;
 		
+	}
+
+
+	@Override
+	public boolean deleteCatalogue(String name) {		
+		try {
+			cst=cn.prepareCall("call deleteCatalogue(?)");
+			cst.setString(1,name);
+			rs=cst.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 }

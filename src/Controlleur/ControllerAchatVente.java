@@ -11,7 +11,8 @@ public class ControllerAchatVente {
 	
 		
 	public static void AfficheAchat(FenetrePrincipale fenetre, I_Catalogue c) {
-		FenetreAchat fenetraAchat=new FenetreAchat(fenetre,c);		
+		FenetreAchat fenetraAchat=new FenetreAchat(fenetre,c);
+		
 	}
 	
 	public static void AfficheVente(FenetrePrincipale fenetre, I_Catalogue c) {		

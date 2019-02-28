@@ -1,24 +1,36 @@
 package fenetre;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.File;
-import java.sql.Connection;
-
-import javax.swing.*;
-
-import BDD.CatalogueDAO;
-import BDD.CatalogueDAOFactory;
-import BDD.DAOConnection;
-import BDD.I_CatalogueDAO;
-import BDD.I_ProduitDAO;
-import BDD.ProduitDAO;
-import BDD.ProduitDAOFactory;
-import Controlleur.ControllerGestionCatalogue;
-
-import java.util.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.TextArea;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.util.ArrayList;
 import java.util.List;
 
-import Modele.*;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+
+import BDD.CatalogueDAOFactory;
+import BDD.CategorieDAOFactory;
+import BDD.DAOConnection;
+import BDD.I_CatalogueDAO;
+import BDD.I_CategorieDAO;
+import BDD.I_ProduitDAO;
+import BDD.ProduitDAOFactory;
+import Controlleur.ControllerGestionCatalogue;
+import Modele.CatalogueFactory;
+import Modele.I_Catalogue;
+import Modele.I_Categorie;
+import Modele.I_Produit;
 
 public class FenetreAccueil extends JFrame implements ActionListener,WindowListener {
 
@@ -31,13 +43,15 @@ public class FenetreAccueil extends JFrame implements ActionListener,WindowListe
 	private List<String> catalogueName;
 	private List<String> detailCatalogue;
 	private I_CatalogueDAO daoCatalogue;
+	private List<I_Categorie> listCategorie;
 
 	public FenetreAccueil() {
 		setTitle("Catalogues");
 		setBounds(500, 500, 200, 125);
 		listeCatalogue=new ArrayList<>();
 		catalogueName=new ArrayList<>();
-		detailCatalogue=new ArrayList<>();
+		detailCatalogue=new ArrayList<>();		
+		listCategorie=new ArrayList<>();
 		Container contentPane = getContentPane();
 		JPanel panInfosCatalogues = new JPanel();
 		JPanel panNbCatalogues = new JPanel();
@@ -99,15 +113,45 @@ public class FenetreAccueil extends JFrame implements ActionListener,WindowListe
 		btAjouter.addActionListener(this);
 		btSupprimer.addActionListener(this);
 		btSelectionner.addActionListener(this);
-		
+		InitializationCatalogue();
 		modifierNbCatalogues();
 		setVisible(true);
 	}
 	
+	public void InitializationCatalogue() {
+		loadCatalogueOracle();
+		loadCatalogueXML();
+		
+	}
+	
+	private void loadCatalogueXML() {
+		I_CatalogueDAO daoC=CatalogueDAOFactory.getDAOXML();
+		I_ProduitDAO daoP=ProduitDAOFactory.getDAOXML();
+		loadCatalogue(daoC, daoP);		
+	}
+
+	private void loadCatalogueOracle() {
+		I_CatalogueDAO daoC=CatalogueDAOFactory.getDAOOracle();
+		I_ProduitDAO daoP=ProduitDAOFactory.getDAOOracle();
+		loadCatalogue(daoC, daoP);
+	}
+
+	private void loadCatalogue(I_CatalogueDAO daoC, I_ProduitDAO daoP) {
+		List<String> namesCat=daoC.getNamesCatalogue();
+		for(String n : namesCat) {
+			I_Catalogue c=CatalogueFactory.createCatalogue(n, daoC, daoP);
+			if(!listeCatalogue.contains(c)) {
+				addCatalogue(c);
+			}
+		}
+	}
+
 	public void addCatalogue(I_Catalogue n) {
 		listeCatalogue.add(n);
-		catalogueName.add(n.getName());
-		detailCatalogue.add(n.getName()+" : "+n.getNbProduits());
+		if(!catalogueName.contains(n.getName())) {
+			catalogueName.add(n.getName());
+			detailCatalogue.add(n.getName()+" : "+n.getNbProduits());
+		}
 		modifierDetailCatalogues(detailCatalogue);
 		modifierListesCatalogues(catalogueName);
 		modifierNbCatalogues();
@@ -133,8 +177,8 @@ public class FenetreAccueil extends JFrame implements ActionListener,WindowListe
 		{
 			String texteSupprime = (String)cmbSupprimer.getSelectedItem();
 			if (texteSupprime != null) {
-				I_Catalogue c=getCatalogue(texteSupprime);
-				deleteCatalogue(c);
+				
+				deleteCatalogue(texteSupprime);
 			}
 				System.out.println("supprime catalogue "+texteSupprime);
 		}
@@ -142,16 +186,32 @@ public class FenetreAccueil extends JFrame implements ActionListener,WindowListe
 		{
 			String texteSelection = (String)cmbSupprimer.getSelectedItem();
 			System.out.println("Catalogue sélectionné : "+texteSelection);
+			I_CategorieDAO dao;
+			if(texteSelection.contains("xml")) {
+				dao=CategorieDAOFactory.getDAOXML();				
+			}else {
+				dao=CategorieDAOFactory.getDAOOracle();
+			}
+			List<String>names=dao.getNamesCategorie();
 			if (texteSelection != null) 
 			{
 				I_Catalogue c=getCatalogue(texteSelection);
-				ControllerGestionCatalogue.displayCatalogue(c,this);
+				ControllerGestionCatalogue.displayCatalogue(c,this,names,dao);
 				this.dispose();
 			}
 		}	
 	}
 
-	private void deleteCatalogue(I_Catalogue c) {
+	private void deleteCatalogue(String name) {
+		I_Catalogue c=getCatalogue(name);
+		I_CatalogueDAO dao=null;
+		if(name.contains("xml")) {
+			dao=CatalogueDAOFactory.getDAOXML();
+		}
+		else{
+			dao=CatalogueDAOFactory.getDAOOracle();
+		}
+		dao.deleteCatalogue(name);
 		listeCatalogue.remove(c);
 		catalogueName.remove(c.getName());
 		modifierDetailCatalogues(detailCatalogue);
@@ -173,19 +233,20 @@ public class FenetreAccueil extends JFrame implements ActionListener,WindowListe
 		String name=txtAjouter.getText();
 		txtAjouter.setText(null);
 		I_Catalogue cat=null;
-		I_CatalogueDAO daoC=null;
-		I_ProduitDAO daoP=null;
+		I_CatalogueDAO daoCatalogue=null;
+		I_ProduitDAO daoProduit=null;
+		I_CategorieDAO daoCategorie=null;
 		if(name.contains("xml")) {
-			name=name.substring(0, name.length()-4);
-			File filexml=getFileXML();
-			daoC=CatalogueDAOFactory.getDAOXML(filexml.getAbsolutePath());
-			daoP=ProduitDAOFactory.getDAOXML(filexml.getAbsolutePath());
+			daoCatalogue=CatalogueDAOFactory.getDAOXML();
+			daoProduit=ProduitDAOFactory.getDAOXML();
+			daoCategorie=CategorieDAOFactory.getDAOXML();
 		}
 		else{
-			daoC=CatalogueDAOFactory.getDAOOracle();
-			daoP=ProduitDAOFactory.getDAOOracle();					
+			daoCatalogue=CatalogueDAOFactory.getDAOOracle();
+			daoProduit=ProduitDAOFactory.getDAOOracle();	
+			daoCategorie=CategorieDAOFactory.getDAOOracle();
 		}
-		cat=createNewCatalogue(name,daoC,daoP);	
+		cat=createNewCatalogue(name,daoCatalogue,daoProduit);	
 		addCatalogue(cat);						
 		repaint();
 	}
@@ -198,13 +259,7 @@ public class FenetreAccueil extends JFrame implements ActionListener,WindowListe
 		I_Catalogue cat=CatalogueFactory.createCatalogue(name,daoC,daoP);		
 		return cat;
 	}
-
-	private File getFileXML() {
-		JFileChooser choose=new JFileChooser("D:\\Java-Projet\\Archi");
-		choose.showOpenDialog(null);
-		File filexml=choose.getSelectedFile();
-		return filexml;
-	}
+	
 
 	private boolean catalogueExist(String name,I_CatalogueDAO dao) {
 		return dao.exist(name);

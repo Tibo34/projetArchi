@@ -1,21 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mesCatalogues>
-	<catalogue numero="1" name="Snack">
+	<catalogue numero="1" name="Snack.xml">
 		<produit nom="Mars">
 			<prixHT>4.0</prixHT>
 			<quantite>12</quantite>
+			<categorie>TVANormale</categorie>
 		</produit>
 		<produit nom="Bounty">
 			<prixHT>8.0</prixHT>
 			<quantite>7</quantite>
+			<categorie>TVANormale</categorie>
 		</produit>
 		<produit nom="Raider">
 			<prixHT>5.5</prixHT>
 			<quantite>7</quantite>
+			<categorie>TVANormale</categorie>
 		</produit>
 		<produit nom="Treets">
 			<prixHT>3.6</prixHT>
 			<quantite>23</quantite>
+			<categorie>TVANormale</categorie>
 		</produit>
-	<produit nom="Kinder"><prixHT>1.2</prixHT><quantite>5</quantite></produit></catalogue>
+		<produit nom="Kinder">
+			<prixHT>1.2</prixHT>
+			<quantite>5</quantite>
+			<categorie>TVANormale</categorie>
+		</produit>
+	</catalogue>
 </mesCatalogues>

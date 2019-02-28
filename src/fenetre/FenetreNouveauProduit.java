@@ -1,5 +1,6 @@
 package fenetre;
 import java.awt.*;
+import java.util.*;
 import java.awt.event.*;
 import javax.swing.*;
 
@@ -16,12 +17,12 @@ public class FenetreNouveauProduit extends JFrame implements ActionListener {
 	private JTextField txtPrixHT;
 	private JTextField txtNom;
 	private JTextField txtQte;
-//	private JComboBox<String> combo;
+	private JComboBox<String> combo;
 	private JButton btValider;
 	private I_Catalogue catalogue;
 	
-//	public FenetreNouveauProduit(String[] lesCategories) {
-	public FenetreNouveauProduit(I_Catalogue c) {	
+	public FenetreNouveauProduit(I_Catalogue c,java.util.List<String> lesCategories) {
+		
 		catalogue=c;
 		setTitle("Creation Produit");
 		setBounds(500, 500, 200, 250);
@@ -30,7 +31,7 @@ public class FenetreNouveauProduit extends JFrame implements ActionListener {
 		JLabel labNom = new JLabel("Nom produit");
 		JLabel labPrixHT = new JLabel("Prix Hors Taxe");
 		JLabel labQte = new JLabel("Quantité en stock");
-//		JLabel labCategorie = new JLabel("Categorie");
+		JLabel labCategorie = new JLabel("Categorie");
 		contentPane.add(labNom);
 		txtNom = new JTextField(15);
 		contentPane.add(txtNom);
@@ -40,11 +41,16 @@ public class FenetreNouveauProduit extends JFrame implements ActionListener {
 		contentPane.add(labQte);
 		txtQte = new JTextField(15);
 		contentPane.add(txtQte);
-
-//		combo = new JComboBox<String>(lesCategories);
-//		combo.setPreferredSize(new Dimension(100, 20));
-//		contentPane.add(labCategorie);
-//		contentPane.add(combo);
+		
+		combo = new JComboBox<String>();
+		System.out.println(lesCategories);
+		for (String str : lesCategories) {
+			combo.addItem(str);
+		}
+		
+		combo.setPreferredSize(new Dimension(100, 20));
+		contentPane.add(labCategorie);
+		contentPane.add(combo);
 
 		
 		btValider = new JButton("Valider");
@@ -57,13 +63,16 @@ public class FenetreNouveauProduit extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {		
 			boolean r=false;
 			String nom="";
+			String cat="";
 			String ajouteEchoue = "le produit"+nom+" n'a pas été ajouté ";
 			String ajoutReussi="produit ajouté : "+nom;
 			try {
 				nom=Utilitaire.extractString(txtNom.getText());
+				cat=combo.getToolTipText();
+				System.out.println(cat);
 				ajouteEchoue="le produit"+nom+" n'a pas été ajouté ";
 				ajoutReussi="produit ajouté : "+nom;
-				r = ControllerCreerSupprimer.creerProduit(nom,Utilitaire.convertDouble(txtPrixHT.getText()),Utilitaire.convertInteger(txtQte.getText()),catalogue);
+				r = ControllerCreerSupprimer.creerProduit(nom,Utilitaire.convertDouble(txtPrixHT.getText()),Utilitaire.convertInteger(txtQte.getText()),cat,catalogue);
 				if(!r) {
 					throw new CreationProduitException();
 				}

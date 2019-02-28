@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mesCategories>
+	<Categorie nom="TVANormale">
+		<taux>0.2</taux>
+	</Categorie>
+</mesCategories>

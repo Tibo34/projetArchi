@@ -11,21 +11,13 @@ import org.jdom.output.XMLOutputter;
 
 public class CatalogueDAOXML implements I_CatalogueDAO {
 	
-	private static String uri = "Produits.xml";
+	private static String uri = "Catalogues.xml";
 	private Document doc;
 	
-	public CatalogueDAOXML() {
-		this(uri);
-	}
 	
-	public CatalogueDAOXML(String u) {
-		uri=u;
-		SAXBuilder sdoc = new SAXBuilder();
-		try {			
-			doc = sdoc.build(uri);
-		} catch (Exception e) {
-			System.out.println("erreur construction arbre JDOM");
-		}
+	public CatalogueDAOXML() {
+		doc=DAOXMLConnection.getDocumentXML();
+		uri=DAOXMLConnection.getUri();
 	}
 
 	
@@ -81,30 +73,17 @@ public class CatalogueDAOXML implements I_CatalogueDAO {
 	}
 
 	@Override
-	public void addCatalogue(String str) {
+	public boolean addCatalogue(String str) {
 		Element root=doc.getRootElement();
 		Element catalogue=new Element("catalogue");
 		Integer num=getNamesCatalogue().size()+1;
 		catalogue.setAttribute("numero",num.toString());
 		catalogue.setAttribute("nom",str);
 		root.addContent(catalogue);
-		sauvegarde();
+		return DAOXMLConnection.sauvegardeCatalogue();
 	}
 	
-	private boolean sauvegarde() {
-		System.out.println("Sauvegarde");
-		XMLOutputter out = new XMLOutputter();
-		try {
-			out.output(doc, new PrintWriter(uri));
-			return true;
-		} catch (Exception e) {
-			System.out.println("erreur sauvegarde dans fichier XML");
-			return false;
-		}
-	}
-
-
-
+	
 	public String getUri() {
 		return uri;
 	}
@@ -113,6 +92,13 @@ public class CatalogueDAOXML implements I_CatalogueDAO {
 
 	public void setUri(String uri) {
 		this.uri = uri;
+	}
+
+	@Override
+	public boolean deleteCatalogue(String name) {
+		Element root=doc.getRootElement();
+		Element catalogue=getCatalogue(name);
+		return root.removeContent(catalogue);		
 	}
 
 }

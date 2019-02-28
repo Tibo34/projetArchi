@@ -5,7 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import BDD.CatalogueDAOFactory;
+import BDD.CategorieDAOFactory;
 import BDD.I_CatalogueDAO;
+import BDD.I_CategorieDAO;
 import BDD.I_ProduitDAO;
 import BDD.ProduitDAOFactory;
 import Utilitaire.Utilitaire;
@@ -38,9 +40,25 @@ public class Catalogue implements I_Catalogue {
     	produits.addAll(p);
     }
     
+    @Override
+    public boolean equals(Object obj) {
+    	
+    	if(obj instanceof Catalogue) {
+    		Catalogue c=(Catalogue)obj;
+    		if(c.getName().equals(nom)) {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
 
 	public static Catalogue getInstance() {
-          return instance;
+		if(instance==null) {
+			Catalogue c=new Catalogue("Snack");
+			instance=c;
+		}
+        return instance;
     }
 
     @Override
@@ -48,15 +66,15 @@ public class Catalogue implements I_Catalogue {
     	if(produit==null) {
     		return false;
     	}
-    	return addProduit(produit.getNom(),produit.getPrixUnitaireHT(),produit.getQuantite());
+    	return addProduit(produit.getNom(),produit.getPrixUnitaireHT(),produit.getQuantite(),produit.getCategorie());
     }
 
     @Override
-    public boolean addProduit(String nom, double prix, int qte) {
+    public boolean addProduit(String nom, double prix, int qte,I_Categorie cat) {
     		nom=supprimeEspace(nom);
-          	I_Produit p=createProduit(nom, prix, qte);          	
-          	if(p!=null&&!produits.contains(p)) {
-          		produitDAO.addNouveauProduit(p,this);
+          	I_Produit p=createProduit(nom, prix, qte,cat);
+             if(p!=null&&!produits.contains(p)) {
+            	 produitDAO.addNouveauProduit(p,this);
           		return produits.add(p);
           	}
           	else {
@@ -70,9 +88,9 @@ public class Catalogue implements I_Catalogue {
 		return nom.trim();
 	}
 
-	private I_Produit createProduit(String nom, double prix, int qte) {
-    	if(!nomExist(nom)&&prix>0&&qte>=0) {
-    		return new Produit(nom,prix,qte,produitDAO);
+	private I_Produit createProduit(String nom, double prix, int qte,I_Categorie cat) {		
+    	if(!nomExist(nom)&&prix>0&&qte>=0&&cat!=null) {
+    		return new Produit(nom,prix,qte,cat);
     	}
     	return null;
     }
@@ -136,6 +154,7 @@ public class Catalogue implements I_Catalogue {
     @Override
     public boolean vendreStock(String nomProduit, int qteVendue) {       
             I_Produit produit = findProduit(nomProduit);
+            System.out.println(produit);
             if (produit==null||qteVendue <= 0||produit.getQuantite() < qteVendue) {
             	return false;
             }
