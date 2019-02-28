@@ -1,10 +1,14 @@
 package fenetre;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.sql.Connection;
+
 import javax.swing.*;
 
 import BDD.CatalogueDAO;
 import BDD.CatalogueDAOFactory;
+import BDD.DAOConnection;
 import BDD.I_CatalogueDAO;
 import BDD.I_ProduitDAO;
 import BDD.ProduitDAO;
@@ -167,23 +171,42 @@ public class FenetreAccueil extends JFrame implements ActionListener,WindowListe
 
 	private void importCatalogue() {
 		String name=txtAjouter.getText();
-		txtAjouter.setText(null);		
-		if(!catalogueExist(name)) {
-			createNewCatalogue(name);
+		txtAjouter.setText(null);
+		I_Catalogue cat=null;
+		I_CatalogueDAO daoC=null;
+		I_ProduitDAO daoP=null;
+		if(name.contains("xml")) {
+			name=name.substring(0, name.length()-4);
+			File filexml=getFileXML();
+			daoC=CatalogueDAOFactory.getDAOXML(filexml.getAbsolutePath());
+			daoP=ProduitDAOFactory.getDAOXML(filexml.getAbsolutePath());
 		}
-		I_Catalogue catalogue=CatalogueFactory.createCatalogue(name);				
-		addCatalogue(catalogue);				
+		else{
+			daoC=CatalogueDAOFactory.getDAOOracle();
+			daoP=ProduitDAOFactory.getDAOOracle();					
+		}
+		cat=createNewCatalogue(name,daoC,daoP);	
+		addCatalogue(cat);						
 		repaint();
 	}
 	
-	private void createNewCatalogue(String name) {
-		I_CatalogueDAO dao=CatalogueDAOFactory.getDAOOracle();
-		dao.addCatalogue("name");
-		
+	private I_Catalogue createNewCatalogue(String name, I_CatalogueDAO daoC, I_ProduitDAO daoP) {
+		if(!catalogueExist(name, daoC)) {
+			System.out.println("nouveau catalogue");
+			daoC.addCatalogue(name);
+		}
+		I_Catalogue cat=CatalogueFactory.createCatalogue(name,daoC,daoP);		
+		return cat;
 	}
 
-	private boolean catalogueExist(String name) {
-		I_CatalogueDAO dao=CatalogueDAOFactory.getDAOOracle();
+	private File getFileXML() {
+		JFileChooser choose=new JFileChooser("D:\\Java-Projet\\Archi");
+		choose.showOpenDialog(null);
+		File filexml=choose.getSelectedFile();
+		return filexml;
+	}
+
+	private boolean catalogueExist(String name,I_CatalogueDAO dao) {
 		return dao.exist(name);
 	}
 
@@ -275,13 +298,14 @@ public class FenetreAccueil extends JFrame implements ActionListener,WindowListe
 
 	@Override
 	public void windowClosed(WindowEvent e) {
+		DAOConnection.close();
 		System.exit(0);
 		
 	}
 
 	@Override
 	public void windowClosing(WindowEvent e) {
-		System.exit(0);
+		// TODO Auto-generated method stub
 		
 	}
 
@@ -308,4 +332,9 @@ public class FenetreAccueil extends JFrame implements ActionListener,WindowListe
 		// TODO Auto-generated method stub
 		
 	}
+
+	
+
+	
+	
 }

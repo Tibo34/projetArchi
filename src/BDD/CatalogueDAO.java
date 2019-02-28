@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import Modele.CatalogueFactory;
+import Modele.I_Catalogue;
 import Utilitaire.Utilitaire;
 import sun.security.jca.GetInstance;
 
@@ -23,12 +25,7 @@ public class CatalogueDAO implements I_CatalogueDAO {
 	private ResultSet rs;
 	
 	public CatalogueDAO() {
-		cn=DAOConnection.getDAOConnection();
-		try {
-			st=cn.createStatement();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		cn=DAOConnection.getDAOConnection();		
 	}
 	
 
@@ -36,8 +33,8 @@ public class CatalogueDAO implements I_CatalogueDAO {
 	public List<String> getNamesCatalogue() {
 		List<String> names=new ArrayList<>();
 		try {
-			rs=st.executeQuery("select nomCatalogue from Catalogues");
-			
+			pst=cn.prepareStatement("select nomCatalogue from Catalogues");
+			rs=pst.executeQuery();
 			if(rs.getRow()==0) {
 				return null;
 			}
@@ -55,7 +52,8 @@ public class CatalogueDAO implements I_CatalogueDAO {
 	public List<String> getIdCatalogue() {
 		List<String> ids=new ArrayList<>();
 		try {
-			rs=st.executeQuery("select numCatalogue from Catalogues");
+			pst=cn.prepareStatement("select numCatalogue from Catalogues");
+			rs=pst.executeQuery();
 			if(rs.getRow()==0) {
 				return null;
 			}
@@ -71,7 +69,8 @@ public class CatalogueDAO implements I_CatalogueDAO {
 	
 	public int getId(String n) {
 		try {
-			rs=st.executeQuery("select numCatalogue,nomCatalogue from Catalogues");
+			pst=cn.prepareStatement("select numCatalogue,nomCatalogue from Catalogues");
+			rs=pst.executeQuery();
 			if(rs.getRow()==0) {
 				return -1;
 			}
@@ -88,11 +87,13 @@ public class CatalogueDAO implements I_CatalogueDAO {
 		}
 		return -1;
 	}
+	
+	
 
 	@Override
 	public int getNombreProduitCatalogue(String name) {
 		try {
-			pst=cn.prepareStatement("select count() from Catalogues natural join Produits where nomCatalogue=?");
+			pst=cn.prepareStatement("select count(*) from Catalogues natural join Produits where nomCatalogue=?");
 			pst.setString(1,name);
 			rs=pst.executeQuery();
 			int nb=0;
@@ -110,17 +111,23 @@ public class CatalogueDAO implements I_CatalogueDAO {
 	@Override
 	public boolean exist(String name) {		
 		try {
-			pst=cn.prepareStatement("select * from Catalogues where nomCatalogue=?");
+			pst=cn.prepareStatement("select count(*) from Catalogues where nomCatalogue=?");
 			pst.setString(1,name);
 			rs=pst.executeQuery();
-			int nb=rs.getRow();
-			if(nb>=0) {
+			int nb=0;
+			while (rs.next()){
+				nb=rs.getInt(1);				
+			}	
+			if(nb>0) {
 				return true;
+			}
+			else {
+				return false;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
-		return false;
 	}
 
 	@Override
@@ -131,7 +138,8 @@ public class CatalogueDAO implements I_CatalogueDAO {
 			rs=cst.executeQuery();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}	
+		}
+		
 	}
 
 }

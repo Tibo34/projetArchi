@@ -16,7 +16,6 @@ import Modele.Produit;
 
 public class ProduitDAO implements I_ProduitDAO {
 	private Connection cn;
-	private Statement st;
 	private PreparedStatement pst;
 	private CallableStatement cst;
 	private ResultSet rs;
@@ -26,11 +25,12 @@ public class ProduitDAO implements I_ProduitDAO {
 	}
 
 	@Override
-	public I_Produit getProduit(String name) {
+	public I_Produit getProduit(String name,I_Catalogue n) {
         I_Produit p=null;
 	    try {
-            rs=st.executeQuery("select * from Produits where nomproduit=?");
+            pst=cn.prepareStatement("select * from Produits natural join Catalogues where nomproduit=? and nomCatalogue=?");
             pst.setString(1,name);
+            pst.setString(2,n.getName());
             pst.executeQuery();
 
             if (rs.next()) {
@@ -60,7 +60,6 @@ public class ProduitDAO implements I_ProduitDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		System.out.println(listproduit);
 		return listproduit;
 	}
 

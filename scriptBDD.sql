@@ -16,7 +16,8 @@ start with 1;
 create TABLE Catalogues(
 numCatalogue NUMBER,
 nomCatalogue VARCHAR(20),
-constraint u_catalogue PRIMARY KEY (numCatalogue)
+constraint u_catalogue PRIMARY KEY (numCatalogue),
+constraint u_nom UNIQUE (nomCatalogue)
 );
 
 CREATE TABLE Produits

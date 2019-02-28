@@ -1,21 +1,29 @@
 package BDD;
 
+import java.io.File;
+
+import javax.swing.JFileChooser;
+
 public class ProduitDAOFactory {
 	
-    private static I_ProduitDAO daoInstance = null;
+    
 
     private ProduitDAOFactory() {}
 
     public static I_ProduitDAO getDAOXML() {
-        if (daoInstance == null || !(daoInstance instanceof ProduitDAO_XML_Adapter))
-            daoInstance = new ProduitDAO_XML_Adapter();
-        return daoInstance;
+      JFileChooser choose=new JFileChooser("D:\\Java-Projet\\Archi");
+		choose.showOpenDialog(null);
+			File filexml=choose.getSelectedFile();
+                   
+        return new ProduitDAO_XML_Adapter(filexml.getAbsolutePath());
     }
     
-    public static I_ProduitDAO getDAOOracle() {
-    	if(daoInstance==null|| !(daoInstance instanceof ProduitDAO)) {
-    		daoInstance=new ProduitDAO();
-    	}
-    	return daoInstance;
+    public static I_ProduitDAO getDAOOracle() {    	
+    	 return new ProduitDAO(); 	
+    
     }
+
+	public static I_ProduitDAO getDAOXML(String absolutePath) {
+		 return new ProduitDAO_XML_Adapter(absolutePath);    	
+	}
 }

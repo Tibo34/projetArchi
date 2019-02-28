@@ -32,4 +32,14 @@ public class DAOConnection {
 		return cn;
 	}
 
+	public static void close() {
+		try {
+			cn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
 }
