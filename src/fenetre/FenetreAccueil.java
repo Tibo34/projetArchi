@@ -254,8 +254,7 @@ public class FenetreAccueil extends JFrame implements ActionListener,WindowListe
 
 	public void addNamesCatalogue(List<String> c, I_CatalogueDAO d) {
 		catalogueName.addAll(c);		
-		daoCatalogue=d;
-		
+		daoCatalogue=d;		
 		modifierListesCatalogues(catalogueName);
 		for (String str : catalogueName) {
 			I_Catalogue catalogue=CatalogueFactory.createCatalogue(str);

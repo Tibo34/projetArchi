@@ -32,6 +32,9 @@ public class DAOConnection {
 		return cn;
 	}
 
+	/**
+	 * ferme la connection
+	 */
 	public static void close() {
 		try {
 			cn.close();
